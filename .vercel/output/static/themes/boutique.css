@@ -1,0 +1,24 @@
+/*
+  Boutique theme. Soft warm palette, sepia neutrals, gold/tan primary.
+  Intentionally bends the 2px radius house rule to 6px to achieve the
+  gentler, more hospitable feel this style calls for. Document in
+  CUSTOMIZING that this is the one sanctioned deviation.
+*/
+:root {
+  --color-background: #faf6ef;
+  --color-foreground: #2a2319;
+  --color-primary: #B8884D;
+  --color-primary-hover: #9b7140;
+  --color-primary-foreground: #ffffff;
+  --color-accent: #8a6a3a;
+  --color-muted: #f2ebde;
+  --color-muted-foreground: #6b5e4a;
+  --color-border: #e2d6bf;
+
+  --font-body: "Lora", "Cormorant Garamond", "Georgia", "Times New Roman", serif;
+  --font-display: "Playfair Display", "Cormorant Garamond", "Georgia", "Times New Roman", serif;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 6px;
+}

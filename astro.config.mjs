@@ -5,7 +5,7 @@ import react from '@astrojs/react';
 import markdoc from '@astrojs/markdoc';
 import keystatic from '@keystatic/astro';
 import sitemap from '@astrojs/sitemap';
-import node from '@astrojs/node';
+import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 // Using `output: 'static'` (default). Individual API routes can opt out with
@@ -17,7 +17,7 @@ export default defineConfig({
   // Example: site: 'https://yourclient.com'
   // site: 'https://example.com',
   output: 'static',
-  adapter: node({ mode: 'standalone' }),
+  adapter: vercel(),
   vite: {
     plugins: [tailwindcss()],
   },

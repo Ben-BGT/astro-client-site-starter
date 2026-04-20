@@ -2,7 +2,7 @@
   "name": "astro-client-site-starter",
   "description": "Client-ready Astro site with a built-in CMS. Git-based content, zero lock-in.",
   "type": "module",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "engines": {
     "node": ">=22.12.0"
   },
@@ -15,7 +15,7 @@
   "dependencies": {
     "@astrojs/check": "^0.9.8",
     "@astrojs/markdoc": "^1.0.3",
-    "@astrojs/node": "^10.0.5",
+    "@astrojs/vercel": "^10.0.4",
     "@astrojs/react": "^5.0.3",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
