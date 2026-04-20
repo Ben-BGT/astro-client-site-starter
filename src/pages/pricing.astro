@@ -68,10 +68,10 @@ const tiers = [
       {tiers.map((tier) => (
         <div
           class={`bg-background border p-8 flex flex-col ${tier.popular ? "border-primary" : "border-border"}`}
-          style="border-radius: 2px"
+          style="border-radius: var(--radius-md)"
         >
           {tier.popular && (
-            <p class="inline-block self-start bg-primary px-2 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground mb-4" style="border-radius: 2px">
+            <p class="inline-block self-start bg-primary px-2 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground mb-4" style="border-radius: var(--radius-md)">
               Most Popular
             </p>
           )}
@@ -92,7 +92,7 @@ const tiers = [
           <a
             href={tier.ctaUrl}
             class={`mt-8 inline-flex items-center justify-center px-6 py-3 text-sm font-semibold transition-colors ${tier.popular ? "bg-primary text-primary-foreground hover:bg-primary-hover" : "border border-border text-foreground hover:border-primary"}`}
-            style="border-radius: 2px"
+            style="border-radius: var(--radius-md)"
           >
             {tier.ctaText}
           </a>

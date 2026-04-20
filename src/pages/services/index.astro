@@ -23,7 +23,7 @@ const services = (await getCollection("services")).sort((a, b) => a.data.order -
           <a
             href={`/services/${service.id}`}
             class="group block bg-background border border-border p-6 hover:border-primary transition-colors flex flex-col"
-            style="border-radius: 2px"
+            style="border-radius: var(--radius-md)"
           >
             {service.data.icon && (
               <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">{service.data.icon}</p>

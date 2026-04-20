@@ -2,60 +2,117 @@
 
 How to turn the generic starter into a site that looks and feels like a specific client's brand.
 
-## Colours and fonts
+## Theme presets (one-line rebrand)
 
-All the design tokens live in one place: `src/styles/global.css`, inside the `@theme` block.
+The starter ships with five ready-made theme presets. Swap the active theme by changing a single import line in `src/layouts/Layout.astro`.
+
+| Preset | Feel |
+|--------|------|
+| `editorial` | Serif display, restrained neutrals, deep red accent, magazine-grade whitespace |
+| `startup` | Clean sans-serif pair, confident blue primary, warm off-white backgrounds (the default) |
+| `agency` | Mono display, high-contrast monochrome, hot orange accent, zero radius |
+| `boutique` | Soft warm palette, sepia neutrals, gold/tan primary, gentle 6px radius |
+| `brutalist` | Raw black-on-white, heavy borders, chunky type, zero radius, no accent colour |
+
+### How to swap
+
+Open `src/layouts/Layout.astro` and change the theme import near the top:
+
+```ts
+// Change this one line to rebrand the whole site.
+import "../styles/themes/startup.css";
+```
+
+to any of:
+
+```ts
+import "../styles/themes/editorial.css";
+import "../styles/themes/agency.css";
+import "../styles/themes/boutique.css";
+import "../styles/themes/brutalist.css";
+```
+
+Save. Every button, card, border radius, font, and colour follows the new theme. No component edits required.
+
+### How the theme system works
+
+Every design token lives as a CSS custom property on `:root` in `src/styles/global.css`. Theme files in `src/styles/themes/*.css` are tiny override files, each defining a single `:root` block that replaces the default token values. Tailwind 4's `@theme` block maps those tokens through to utility classes (`bg-primary`, `text-foreground`, `font-sans`, etc.), so the whole site picks up the new values through the cascade.
+
+### Token reference
+
+Defined in `src/styles/global.css`:
 
 ```css
-@theme {
-  --font-sans: "Oxanium", ui-sans-serif, system-ui, sans-serif;
-
+:root {
+  /* Colours */
   --color-background: #ffffff;
   --color-foreground: #0f172a;
+  --color-primary: #1f6feb;
+  --color-primary-hover: #1a5fcc;
+  --color-primary-foreground: #ffffff;
+  --color-accent: #0ea5a4;
   --color-muted: #f5f5f5;
   --color-muted-foreground: #64748b;
   --color-border: #e2e8f0;
 
-  --color-primary: #1f6feb;
-  --color-primary-hover: #1a5fcc;
-  --color-primary-foreground: #ffffff;
+  /* Typography */
+  --font-body: "Oxanium", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Oxanium", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
-  --color-accent: #0ea5a4;
+  /* Radius */
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+
+  /* Spacing */
+  --space-xs, --space-sm, --space-md, --space-lg, --space-xl, --space-2xl, --space-3xl
 }
 ```
 
-The tokens that matter for branding:
+The tokens that matter most for rebranding:
 
-- `--color-primary` — the accent colour used for buttons, links, focus rings, and any callouts. This is the single biggest visual change when you rebrand.
+- `--color-primary` — the accent colour used for buttons, links, focus rings, and callouts. The single biggest visual change.
 - `--color-primary-hover` — the hover state for `--color-primary`. Usually a slightly darker shade.
 - `--color-accent` — a secondary accent. Used sparingly. Set it to something complementary, or match `--color-primary` if the brand only has one colour.
 - `--color-foreground` — the main body text colour.
 - `--color-muted` / `--color-muted-foreground` — soft background blocks and secondary text.
 - `--color-border` — hairlines, dividers, card outlines.
+- `--font-body` — every paragraph, button, and piece of UI copy.
+- `--font-display` — headings (`h1` through `h6`).
+- `--radius-md` — the site-wide corner radius. Every card, button, and image uses this.
 
-Change these values, save, and the whole site follows. No component edits needed for a rebrand.
+### Creating a custom theme
 
-## Fonts
+1. Copy any preset, for example `cp src/styles/themes/startup.css src/styles/themes/acme.css`.
+2. Edit the token values inside the `:root` block.
+3. Swap the import in `Layout.astro` to `import "../styles/themes/acme.css";`.
 
-The starter uses Oxanium as the default. To swap it:
+You only need to declare the tokens you want to override. Anything you leave out falls back to the defaults in `global.css`.
 
-1. Pick a font on [Google Fonts](https://fonts.google.com/) or self-host one.
-2. In `src/layouts/Layout.astro`, replace the Oxanium preconnect and stylesheet link with the new font's link tags.
-3. In `src/styles/global.css`, update `--font-sans` to put the new font first in the stack.
+## Google Fonts
 
-Example for Inter:
+The starter no longer hard-codes a Google Fonts link. Instead, the Layout exposes a `fontsHref` prop. Two ways to load a web font:
+
+**Option 1 — pass the URL through the layout prop.** Good when one page needs a different font, or when you want the URL in a single place.
+
+```astro
+<Layout title="Home" fontsHref="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  ...
+</Layout>
+```
+
+When `fontsHref` is set, the Layout emits the standard preconnect + stylesheet tags. When it's `null` (the default) nothing is loaded, so the site falls back to whatever system fonts are in the theme's `--font-body` stack.
+
+**Option 2 — paste the `<link>` tags directly into `Layout.astro`.** Good for the single-brand site where the font never changes.
 
 ```html
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 ```
 
-```css
---font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-```
-
-If you delete the Google Fonts link entirely, the site falls back to the native system font stack. That's a fine default for projects where loading a web font isn't worth the extra weight.
+Whichever you pick, make sure your active theme's `--font-body` and `--font-display` put the new font first in the stack.
 
 ## Layout structure
 
@@ -64,7 +121,7 @@ The site's chrome lives in two components:
 - `src/components/Header.astro` — top navigation. Edit the links here, and the logo / brand mark.
 - `src/components/Footer.astro` — footer. Reads from `siteSettings` in the CMS for footer text and social links, so most footer edits happen in `/keystatic`.
 
-`src/layouts/Layout.astro` is the wrapper every page uses. That's where the `<head>`, font links, and body structure live. Edit it when you need to add global scripts, change meta tags, or restructure the page shell.
+`src/layouts/Layout.astro` is the wrapper every page uses. That's where the active theme import, `<head>`, font loading, and body structure live. Edit it when you need to add global scripts, change meta tags, or swap themes.
 
 ## Adding pages
 
@@ -142,7 +199,7 @@ Change `'Site CMS'` to the client's business name, or something like `'Acme CMS'
 
 These are opinionated defaults. Keep them unless the client explicitly wants something different.
 
-- No rounded corners. Cards use `border-radius: 2px` max.
+- No rounded corners. Cards use `border-radius: 2px` max. The one sanctioned deviation is the `boutique` theme, which goes to 6px intentionally to match the softer brand feel.
 - No gradients. Solid colours only.
 - Accent borders as straight lines (e.g. a left border on a card), not curves.
 - No em dashes in copy.

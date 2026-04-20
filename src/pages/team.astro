@@ -20,18 +20,18 @@ const team = (await getCollection("team")).sort((a, b) => a.data.order - b.data.
     ) : (
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {team.map((member) => (
-          <div class="bg-background border border-border p-6" style="border-radius: 2px">
+          <div class="bg-background border border-border p-6" style="border-radius: var(--radius-md)">
             {member.data.photo ? (
               <img
                 src={member.data.photo}
                 alt={member.data.name}
                 class="w-24 h-24 object-cover mb-4"
-                style="border-radius: 2px"
+                style="border-radius: var(--radius-md)"
               />
             ) : (
               <div
                 class="w-24 h-24 bg-muted flex items-center justify-center text-2xl font-semibold text-muted-foreground mb-4"
-                style="border-radius: 2px"
+                style="border-radius: var(--radius-md)"
               >
                 {member.data.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
               </div>

@@ -17,7 +17,7 @@ const email = settings?.contactEmail || "hello@example.com";
       <a
         href={`mailto:${email}`}
         class="inline-flex items-center justify-center bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
-        style="border-radius: 2px"
+        style="border-radius: var(--radius-md)"
       >
         {email}
       </a>

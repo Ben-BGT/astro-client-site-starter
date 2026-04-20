@@ -1,32 +1,72 @@
 @import "tailwindcss";
 
 /*
-  Theme tokens. Rebrand the site by adjusting these values.
+  Design tokens. Every visual choice flows through these CSS custom
+  properties on :root. Theme presets in `./themes/*.css` override them
+  with a single import in Layout.astro.
 
-  - `primary` is the accent colour used for buttons, links, focus states.
-  - `primary-hover` is the hover variant for `primary`.
-  - `accent` is a secondary colour for optional accents.
-  - The layout tokens (foreground, muted, border, background) define the
-    neutral palette and usually don't need much tweaking.
+  To rebrand the whole site, swap the theme import in Layout.astro. To
+  hand-tune, edit the preset or override individual tokens in a new
+  :root block.
 */
-@theme {
-  --font-sans: "Oxanium", ui-sans-serif, system-ui, sans-serif;
-
+:root {
+  /* Colours */
   --color-background: #ffffff;
   --color-foreground: #0f172a;
+  --color-primary: #1f6feb;
+  --color-primary-hover: #1a5fcc;
+  --color-primary-foreground: #ffffff;
+  --color-accent: #0ea5a4;
   --color-muted: #f5f5f5;
   --color-muted-foreground: #64748b;
   --color-border: #e2e8f0;
 
-  --color-primary: #1f6feb;
-  --color-primary-hover: #1a5fcc;
-  --color-primary-foreground: #ffffff;
+  /* Typography */
+  --font-body: "Oxanium", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Oxanium", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
-  --color-accent: #0ea5a4;
+  /* Radius (2px default per house style, boutique theme bends this to 6px) */
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+
+  /* Spacing scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 5rem;
+}
+
+/*
+  Tailwind 4 theme mapping. Every Tailwind utility (bg-primary,
+  text-foreground, font-sans, etc.) resolves through the custom
+  properties above, so theme overrides flow through the entire site
+  without any component edits.
+*/
+@theme {
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-display);
+  --font-mono: var(--font-mono);
+
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-muted: var(--color-muted);
+  --color-muted-foreground: var(--color-muted-foreground);
+  --color-border: var(--color-border);
+
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-foreground: var(--color-primary-foreground);
+
+  --color-accent: var(--color-accent);
 }
 
 html {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   background: var(--color-background);
   color: var(--color-foreground);
 }
@@ -34,4 +74,8 @@ html {
 body {
   background: var(--color-background);
   color: var(--color-foreground);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
 }

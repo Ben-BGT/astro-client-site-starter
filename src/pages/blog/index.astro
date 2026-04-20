@@ -34,13 +34,13 @@ function formatDate(d) {
           <a
             href={`/blog/${featured.id}`}
             class="group block border border-border p-8 hover:border-primary transition-colors mb-10"
-            style="border-radius: 2px"
+            style="border-radius: var(--radius-md)"
           >
             <div class="grid gap-6 md:grid-cols-2 md:items-center">
               {featured.data.cover ? (
-                <img src={featured.data.cover} alt={featured.data.title} class="w-full h-64 object-cover" style="border-radius: 2px" />
+                <img src={featured.data.cover} alt={featured.data.title} class="w-full h-64 object-cover" style="border-radius: var(--radius-md)" />
               ) : (
-                <div class="w-full h-64 bg-muted flex items-center justify-center text-muted-foreground text-sm" style="border-radius: 2px">
+                <div class="w-full h-64 bg-muted flex items-center justify-center text-muted-foreground text-sm" style="border-radius: var(--radius-md)">
                   Featured
                 </div>
               )}
@@ -67,10 +67,10 @@ function formatDate(d) {
               <a
                 href={`/blog/${post.id}`}
                 class="group block border border-border p-6 hover:border-primary transition-colors"
-                style="border-radius: 2px"
+                style="border-radius: var(--radius-md)"
               >
                 {post.data.cover && (
-                  <img src={post.data.cover} alt={post.data.title} class="w-full h-40 object-cover mb-4" style="border-radius: 2px" />
+                  <img src={post.data.cover} alt={post.data.title} class="w-full h-40 object-cover mb-4" style="border-radius: var(--radius-md)" />
                 )}
                 <time class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   {formatDate(post.data.date)}

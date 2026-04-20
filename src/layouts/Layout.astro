@@ -1,5 +1,9 @@
 ---
 import "../styles/global.css";
+// Theme preset. Swap this one line to rebrand the site.
+// Options: editorial | startup | agency | boutique | brutalist
+import "../styles/themes/startup.css";
+
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { reader } from "../lib/keystatic";
@@ -8,6 +12,13 @@ interface Props {
   title?: string;
   description?: string;
   hideChrome?: boolean;
+  /**
+   * Optional Google Fonts (or any external stylesheet) URL. When set,
+   * the layout emits the standard preconnect + stylesheet tags in the
+   * head. Pair this with a matching `--font-body` / `--font-display`
+   * in your active theme preset.
+   */
+  fontsHref?: string | null;
 }
 
 const settings = await reader.singletons.siteSettings.read();
@@ -18,6 +29,7 @@ const {
   title = defaultTitle,
   description = defaultDescription,
   hideChrome = false,
+  fontsHref = null,
 } = Astro.props;
 ---
 
@@ -33,9 +45,14 @@ const {
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    {fontsHref && (
+      <>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href={fontsHref} rel="stylesheet" />
+      </>
+    )}
 
     <slot name="head" />
 

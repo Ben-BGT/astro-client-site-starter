@@ -36,14 +36,14 @@ const description = settings?.description;
         <a
           href={heroCtaUrl}
           class="inline-flex items-center justify-center bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors w-full sm:w-auto"
-          style="border-radius: 2px"
+          style="border-radius: var(--radius-md)"
         >
           {heroCtaText}
         </a>
         <a
           href="/contact"
           class="inline-flex items-center justify-center border border-border px-6 py-3 text-base font-semibold text-foreground hover:border-primary transition-colors w-full sm:w-auto"
-          style="border-radius: 2px"
+          style="border-radius: var(--radius-md)"
         >
           Get in touch
         </a>
@@ -65,7 +65,7 @@ const description = settings?.description;
             <a
               href={`/services/${service.id}`}
               class="group block bg-background border border-border p-6 hover:border-primary transition-colors"
-              style="border-radius: 2px"
+              style="border-radius: var(--radius-md)"
             >
               {service.data.icon && (
                 <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">{service.data.icon}</p>
@@ -87,7 +87,7 @@ const description = settings?.description;
         <SectionHeading overline="What clients say" title="Words from the people I've worked with" align="center" />
         <div class="mt-12 grid gap-6 md:grid-cols-2">
           {featuredTestimonials.slice(0, 2).map((t) => (
-            <figure class="bg-background border border-border p-6" style="border-radius: 2px">
+            <figure class="bg-background border border-border p-6" style="border-radius: var(--radius-md)">
               <blockquote class="text-base text-foreground leading-relaxed">&ldquo;{t.data.quote}&rdquo;</blockquote>
               <figcaption class="mt-4 text-sm text-muted-foreground">
                 <span class="font-semibold text-foreground">{t.data.author}</span>
@@ -113,7 +113,7 @@ const description = settings?.description;
         <a
           href="/contact"
           class="inline-flex items-center justify-center bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
-          style="border-radius: 2px"
+          style="border-radius: var(--radius-md)"
         >
           Book a call
         </a>

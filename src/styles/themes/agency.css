@@ -1,0 +1,23 @@
+/*
+  Agency theme. Mono-ish display, high-contrast monochrome palette,
+  one hot accent, zero radius. Brutal-adjacent, suitable for creative
+  shops and studios.
+*/
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+  --color-primary: #000000;
+  --color-primary-hover: #1a1a1a;
+  --color-primary-foreground: #ffffff;
+  --color-accent: #FF5500;
+  --color-muted: #f2f2f2;
+  --color-muted-foreground: #404040;
+  --color-border: #000000;
+
+  --font-body: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-display: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+}

@@ -36,7 +36,27 @@ Then:
 
 That's the full loop. Clone, run, edit, see it change. From here, customise the branding and add a client's real content.
 
-## What you can edit via /keystatic
+## What you can edit
+
+The starter is customisable on three levels.
+
+### Theme presets (one-line rebrand)
+
+Five built-in theme presets ship out of the box. Swap the active theme by changing a single import in `src/layouts/Layout.astro`.
+
+| Preset | Feel |
+|--------|------|
+| `editorial` | Serif display, restrained neutrals, deep red accent, magazine whitespace |
+| `startup` | Clean sans-serif pair, blue primary, warm off-white backgrounds (the default) |
+| `agency` | Mono display, monochrome palette, hot orange accent, zero radius |
+| `boutique` | Soft warm palette, sepia neutrals, gold/tan primary, gentle 6px radius |
+| `brutalist` | Black-on-white, heavy borders, chunky type, zero radius, no accent |
+
+![Theme preview](docs/screenshots/themes.png)
+
+Full walkthrough and a token reference are in [CUSTOMIZING.md](CUSTOMIZING.md).
+
+### Content via /keystatic
 
 Open `/keystatic` in the browser and the editor groups everything into two sections.
 
@@ -119,7 +139,7 @@ Common patterns: a flat build fee, plus an optional monthly retainer for hosting
 No. The site deploys as static-first with a small Node adapter for Keystatic. Vercel, Netlify, and Cloudflare Pages all run it on their free or cheap tiers.
 
 **How do I rebrand?**
-Edit the five colour tokens in `src/styles/global.css`, swap the font stack, and change `ui.brand.name` in `keystatic.config.ts`. Full walkthrough in [CUSTOMIZING.md](CUSTOMIZING.md).
+Swap the theme preset by changing one import line in `src/layouts/Layout.astro`. Five presets ship with the starter (editorial, startup, agency, boutique, brutalist). For finer control, override individual CSS custom property tokens in `src/styles/global.css` or a custom theme file. Full walkthrough in [CUSTOMIZING.md](CUSTOMIZING.md).
 
 ## Credits
 
