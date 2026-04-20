@@ -355,6 +355,12 @@ export default config({
               description: 'Optional. Used sparingly for callouts and eyebrows.',
               validation: { length: { min: 0, max: 9 } },
             }),
+            // TODO (member extensions): Collapse the three font fields
+            // (fontBody, fontDisplay, googleFontsHref) into a single "Font pair"
+            // select with a curated list (Inter + Fraunces, IBM Plex Sans + IBM
+            // Plex Serif, etc). The select value maps server-side to both the
+            // font-family stacks and the Google Fonts import URL, so clients
+            // can't mismatch them. Keep these three as an "Advanced" escape hatch.
             fontBody: fields.text({
               label: 'Body font stack',
               description:

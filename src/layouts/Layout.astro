@@ -90,9 +90,22 @@ const themeHref = themePreset === "custom" ? null : `/themes/${themePreset}.css`
     <slot name="head" />
 
     {/*
-      Add analytics, pixel, or tag-manager snippets here (Google Tag Manager,
-      Plausible, Fathom, Rewardful, etc). Leaving this blank out of the box
-      keeps the starter tracker-free.
+      TODO (member extensions): Drop in an analytics snippet (Google Tag Manager,
+      Plausible, Fathom, Rewardful). Left blank by default to keep the starter
+      tracker-free until the client picks a provider.
+
+      TODO (member extensions): Generate a per-page OG image. Easiest path is
+      `satori` + `@vercel/og` rendering SVG to PNG at build time, then point
+      `og:image` at the generated asset. Without this, social share previews
+      fall back to the browser's default screenshot.
+
+      TODO (member extensions): Add JSON-LD structured data for Organization,
+      LocalBusiness, or Article depending on page type. Paste a <script
+      type="application/ld+json"> block here keyed off Astro.url.pathname. Helps
+      SEO and AI surfaces parse the site.
+
+      TODO (member extensions): Favicon is a placeholder /favicon.svg. Replace
+      with client branding (ideally SVG + PNG fallback + apple-touch-icon).
     */}
   </head>
   <body class="min-h-screen">

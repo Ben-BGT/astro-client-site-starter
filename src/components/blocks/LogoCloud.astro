@@ -2,6 +2,11 @@
 /*
   Logo cloud. Grayscale by default, subtle hover to full colour. Used to
   show client logos, press coverage, or partner badges.
+
+  TODO (member extensions): Add a Keystatic helper for uploading SVG logos
+  and auto-normalizing them (uniform height, consistent viewBox). Current
+  setup accepts any image; SVGs render sharp at every size and should be
+  preferred.
 */
 interface Logo {
   name?: string;

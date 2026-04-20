@@ -3,6 +3,16 @@
   Hero block. Picks one of the four hero variants based on `variant`, and
   passes through all the editable copy. `image` is only used by the
   "split-with-image" variant.
+
+  TODO (member extensions): Wire AI image generation into the CMS. A simple
+  pattern: add a Keystatic custom field with a "Generate" button that calls a
+  small Astro API route (`/api/generate-hero-image`) backed by Fal.ai Seedream,
+  Replicate, or the OpenAI images endpoint. Save the returned asset into
+  public/images/hero/ and fill in the hero image field automatically.
+
+  TODO (member extensions): Replace <img> with Astro's <Image /> for responsive
+  srcset + lazy loading + build-time optimization. Hero is usually above the
+  fold, so mark it `loading="eager"` and `fetchpriority="high"`.
 */
 import HeroLeftAligned from "../heroes/HeroLeftAligned.astro";
 import HeroCentered from "../heroes/HeroCentered.astro";

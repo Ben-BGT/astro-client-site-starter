@@ -1,4 +1,16 @@
 ---
+/*
+  TODO (member extensions): Swap the mailto: for a real form. Good options:
+  - Tally (free, no code): embed an iframe.
+  - Netlify Forms (free tier on Netlify): add `data-netlify="true"` to a <form>.
+  - Formspree / Basin: point <form action="..."> at the endpoint.
+  - Resend + an Astro API route (opt out of prerender with
+    `export const prerender = false;`) for full control.
+
+  Whichever you pick, keep the layout and heading so the page still reads like
+  part of the site. Consider adding a honeypot field and a reCAPTCHA/Turnstile
+  challenge to knock back bot spam.
+*/
 import Layout from "../layouts/Layout.astro";
 import { reader } from "../lib/keystatic";
 

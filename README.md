@@ -182,6 +182,42 @@ No. The site deploys as static-first with a small Node adapter for Keystatic. Ve
 **How do I rebrand?**
 Open `/keystatic` → Site settings → Design. Pick a preset, override colors and fonts, switch Header / Footer variants. Save. Five presets ship with the starter (editorial, startup, agency, boutique, brutalist). Full walkthrough in [CUSTOMIZING.md](CUSTOMIZING.md).
 
+## Ideas to extend (good member builds)
+
+The starter ships a production-ready base, but a handful of high-value upgrades are deliberately left for members to build, so you can pick whichever matches the client. Every item below has a TODO comment in the relevant file to show exactly where the code goes.
+
+### Setup-time polish (do once per client)
+
+- **Set the site URL.** Open `astro.config.mjs` and set `site: 'https://yourclient.com'`. The sitemap integration is already wired, so a valid sitemap-index.xml appears in `dist/` at build time.
+- **Swap the favicon.** Replace `public/favicon.svg` and add apple-touch-icon and PNG fallbacks.
+- **Pick an analytics provider.** Drop a Plausible, Fathom, or GTM snippet into `src/layouts/Layout.astro` where the TODO comment sits in `<head>`.
+
+### Content and interaction upgrades
+
+- **Real contact form.** `src/pages/contact.astro` is a `mailto:` link today. Swap for Tally, Netlify Forms, Formspree, or a Resend-powered Astro API route.
+- **AI hero image generator.** Add a small `/api/generate-hero-image` route that calls Fal.ai Seedream, Replicate, or the OpenAI images endpoint, then wires the result into the Hero block's image field.
+- **Rich text in ContentBlock.** Current block splits paragraphs only. Run the body through `marked` or `markdown-it`, or add a dedicated `longform` Keystatic collection with `fields.markdoc` for proper long-form prose.
+- **Better font picker.** `keystatic.config.ts` exposes three font fields that can go out of sync. Collapse to one "Font pair" select that maps to both the font stacks and the Google Fonts URL server-side. Keep the three raw fields as an "Advanced" escape hatch.
+
+### SEO and performance
+
+- **Per-page OG images.** Use `satori` + `@vercel/og` to render SVG to PNG at build time, then point `og:image` at the generated asset. Big uplift for social share previews.
+- **Structured data (JSON-LD).** Paste an `Organization`, `LocalBusiness`, or `Article` block in `Layout.astro`, keyed off `Astro.url.pathname`. Helps SEO and AI surfaces parse the site.
+- **Responsive images.** Swap `<img>` for Astro's `<Image />` component in Hero, CtaSplit, LogoCloud. Generates srcset plus WebP/AVIF variants at build.
+
+### Blog upgrades
+
+- **Pagination.** Use Astro's native `getStaticPaths` pagination once posts exceed 50.
+- **On-site search.** Pagefind drops in with `npm i -D pagefind` plus a post-build step plus one UI snippet. No infra.
+- **Tag archives.** Add `tags: fields.array(...)` to the posts schema and generate `/blog/tag/[tag]` with `getStaticPaths`.
+
+### Visual polish
+
+- **Dark mode.** Add a `@media (prefers-color-scheme: dark)` layer inside each theme file, or wire a manual toggle that flips `[data-theme="dark"]` and persists to localStorage.
+- **Theme preview page.** A `/theme-preview` route that renders every hero, header, footer, and block variant in one place is the fastest way to screenshot the starter for sales.
+
+Each item is a small, self-contained win. Ship one, use it on a client, and the starter gets stronger for everyone.
+
 ## Credits
 
 Based on the pattern I use at [mikerhodes.com.au](https://mikerhodes.com.au). Shared with the Ads to AI community.

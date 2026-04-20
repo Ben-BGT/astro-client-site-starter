@@ -8,6 +8,13 @@
   To rebrand the whole site, swap the theme import in Layout.astro. To
   hand-tune, edit the preset or override individual tokens in a new
   :root block.
+
+  TODO (member extensions): Add a dark-mode layer. Two options:
+  (1) System-preference only: wrap dark values in `@media (prefers-color-scheme: dark)`
+      inside each theme file and browsers auto-switch.
+  (2) Manual toggle: add `[data-theme="dark"] :root { ... }` plus a small
+      script in Layout.astro that flips the attribute and persists to
+      localStorage. Keep both themes in sync with the same token names.
 */
 :root {
   /* Colours */

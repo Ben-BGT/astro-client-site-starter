@@ -1,4 +1,17 @@
 ---
+/*
+  TODO (member extensions): Add pagination. At 50+ posts this page gets long.
+  Astro supports `getStaticPaths` pagination natively (see docs/pagination) so
+  /blog, /blog/2, /blog/3 can be generated with one change.
+
+  TODO (member extensions): Add on-site search. Pagefind is a 1-hour add:
+  `npm i -D pagefind`, run it after `astro build`, include the pagefind UI
+  snippet on this page, and every post becomes searchable with zero infra.
+
+  TODO (member extensions): Add tag/category support. Add a `tags: fields.array(...)`
+  to the posts schema in keystatic.config.ts, then generate /blog/tag/[tag]
+  archive pages with getStaticPaths.
+*/
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 

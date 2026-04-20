@@ -3,6 +3,10 @@
   Split CTA. Image on one side, headline + subhead + button on the other.
   `imageSide` picks left or right. On mobile the image always stacks
   above the text.
+
+  TODO (member extensions): Swap <img> for Astro's <Image /> component so the
+  build pipeline generates responsive srcset and WebP/AVIF variants. Cuts page
+  weight significantly for client sites with photo-heavy CTAs.
 */
 interface Props {
   image?: string | null;

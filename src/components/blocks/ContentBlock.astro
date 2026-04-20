@@ -5,6 +5,12 @@
   splits paragraphs on blank lines. Good enough for intros, legal copy,
   and essay-style pages. For richer content, use a full Keystatic markdoc
   field on a dedicated collection entry.
+
+  TODO (member extensions): Upgrade to proper markdown/rich text. Two routes:
+  (1) Run the `body` string through a lightweight markdown parser (marked,
+  markdown-it) so ## headings, **bold**, [links], and lists render.
+  (2) Add a dedicated "longform" collection with `fields.markdoc` and teach
+  the page builder to pull an entry by slug instead of inlining prose here.
 */
 interface Props {
   body?: string;
