@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Replace with the client's real contact address before going live.
+const email = "hello@example.com";
+---
+
+<Layout title="Contact — Your Site" description="Get in touch.">
+  <section class="mx-auto max-w-3xl px-6 py-16 lg:px-8 lg:py-24">
+    <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Contact</p>
+    <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">Say hello.</h1>
+    <p class="mt-6 text-lg text-muted-foreground leading-relaxed">
+      The fastest way to reach us is email. We read everything that lands in the inbox and reply within a couple of business days.
+    </p>
+    <div class="mt-10">
+      <a
+        href={`mailto:${email}`}
+        class="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
+      >
+        {email}
+      </a>
+    </div>
+    <p class="mt-8 text-sm text-muted-foreground">
+      Prefer a form? Swap this page for your form provider (Tally, Netlify Forms, Formspree) and keep the layout the same.
+    </p>
+  </section>
+</Layout>

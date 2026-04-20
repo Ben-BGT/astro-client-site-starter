@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/*
+  Theme tokens. Rebrand the site by adjusting these values.
+
+  - `primary` is the accent colour used for buttons, links, focus states.
+  - `primary-hover` is the hover variant for `primary`.
+  - `accent` is a secondary colour for optional accents.
+  - The layout tokens (foreground, muted, border, background) define the
+    neutral palette and usually don't need much tweaking.
+*/
+@theme {
+  --font-sans: "Oxanium", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-muted: #f5f5f5;
+  --color-muted-foreground: #64748b;
+  --color-border: #e2e8f0;
+
+  --color-primary: #1f6feb;
+  --color-primary-hover: #1a5fcc;
+  --color-primary-foreground: #ffffff;
+
+  --color-accent: #0ea5a4;
+}
+
+html {
+  font-family: var(--font-sans);
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+}

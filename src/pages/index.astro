@@ -1,0 +1,77 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import ProductCard from "../components/ProductCard.astro";
+
+const features = [
+  {
+    name: "Built on Astro",
+    description: "Static-first, fast by default, and ready to deploy anywhere Node runs.",
+    href: "/blog",
+  },
+  {
+    name: "Built-in CMS",
+    description: "Edit posts and pages at /keystatic. Every save commits straight to git.",
+    href: "/blog",
+  },
+  {
+    name: "Yours to keep",
+    description: "No database, no lock-in. Fork the repo and the whole site goes with it.",
+    href: "/about",
+  },
+];
+---
+
+<Layout title="Your Site" description="A fast, git-based Astro site with a built-in CMS.">
+  <section class="relative overflow-hidden border-b border-border">
+    <div class="relative mx-auto max-w-5xl px-6 py-20 sm:py-24 lg:px-8 lg:py-28 text-center">
+      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Welcome</p>
+      <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-tight">
+        A simple, fast site you actually own.
+      </h1>
+      <p class="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
+        Write posts in the browser. Commits land in git. Deploy for a few dollars a month. Swap the copy, pick your colours, and you're live.
+      </p>
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="/blog" class="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors w-full sm:w-auto">
+          Read the blog
+        </a>
+        <a href="/contact" class="inline-flex items-center justify-center rounded-lg border border-border px-6 py-3 text-base font-semibold text-foreground hover:border-primary transition-colors w-full sm:w-auto">
+          Get in touch
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <SectionHeading
+        overline="Why this stack"
+        title="Built for sites that need to stay simple"
+        description="Three pieces, nothing more. Everything else is a choice you can make later."
+        align="center"
+      />
+      <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {features.map((feature) => (
+          <ProductCard name={feature.name} description={feature.description} href={feature.href} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 bg-muted border-t border-border">
+    <div class="mx-auto max-w-3xl px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+        Ready to make it yours?
+      </h2>
+      <p class="mt-4 text-lg text-muted-foreground">
+        Update the copy on this page, swap the logo, adjust the colours in <code class="text-primary">global.css</code>, and publish. The README covers the rest.
+      </p>
+      <div class="mt-8">
+        <a href="/blog" class="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors">
+          See an example post
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

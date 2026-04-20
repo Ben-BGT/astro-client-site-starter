@@ -1,0 +1,37 @@
+---
+title: Hello world
+date: 2026-04-20
+excerpt: The first post. A quick tour of the stack and how to edit this page in your browser.
+---
+
+If you can read this, the site is working.
+
+## The stack
+
+This site runs on three pieces:
+
+- **Astro** handles pages, routing, and the build. It ships mostly static HTML so pages load fast and hosting stays cheap.
+- **Keystatic** is the CMS. Open `/keystatic` in the browser to edit posts with a real WYSIWYG editor. Every save becomes a markdown file in the git repo.
+- **Tailwind** handles the styling. Theme tokens live in `src/styles/global.css`, so a rebrand takes minutes.
+
+## Editing this post
+
+1. Run `npm run dev` to start the site locally.
+2. Open `http://localhost:4321/keystatic`.
+3. Pick the `Posts` collection, find this post, change the text, and hit save.
+4. Commit the change to git and deploy.
+
+When you wire up GitHub storage (see the README), editors can skip the local step and edit straight from the browser on the live site.
+
+## Adding a new post
+
+In Keystatic, click `Add Post`, fill in the title and body, and save. A new `.mdoc` file appears in `src/content/posts/` and shows up on the blog index.
+
+## Why this setup
+
+- **Git-based content.** No database. Content lives next to the code and travels with the repo.
+- **Cheap to host.** A static site runs happily on any platform that serves HTML. Most are free or near-free at this scale.
+- **Fast.** Astro ships almost no JavaScript by default. Pages load the moment they hit the browser.
+- **Portable.** If you ever move hosts or hand the site off, the git repo is the site. No export needed.
+
+Delete this post when you're ready for your own content.
