@@ -6,9 +6,9 @@ From v0.4.0 onwards, the homepage, about page, and any number of landing pages a
 
 ## Live demo
 
-[https://astro-starter-demo.vercel.app](https://astro-starter-demo.vercel.app)
+[https://astro-client-site-starter.vercel.app](https://astro-client-site-starter.vercel.app)
 
-(Demo URL will be updated once the site is deployed.)
+Poke the homepage, services, team, blog, pricing, landing page. Everything's editable once you clone it. The `/keystatic` editor isn't exposed on the demo — it runs in local mode only until you wire up GitHub OAuth, which members do when they deploy for their own client. See [DEPLOY.md](DEPLOY.md).
 
 ## Screenshots
 

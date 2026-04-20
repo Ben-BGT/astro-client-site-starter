@@ -11,11 +11,10 @@ import vercel from '@astrojs/vercel';
 // Using `output: 'static'` (default). Individual API routes can opt out with
 // `export const prerender = false;` so only those endpoints run on the Node server.
 export default defineConfig({
-  // TODO (member setup): Set this to the final production URL before deploying.
-  // The @astrojs/sitemap integration below uses it to emit sitemap-index.xml and
-  // sitemap-0.xml at build time, and the RSS feed uses it for absolute links.
-  // Example: site: 'https://yourclient.com'
-  // site: 'https://example.com',
+  // TODO (member setup): Change this to your client's production URL.
+  // Used by @astrojs/sitemap to emit sitemap-index.xml + sitemap-0.xml and by
+  // the RSS feed for absolute links.
+  site: 'https://astro-client-site-starter.vercel.app',
   output: 'static',
   adapter: vercel(),
   vite: {
