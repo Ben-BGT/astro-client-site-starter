@@ -5,11 +5,17 @@ import Layout from "../../layouts/Layout.astro";
 const posts = (await getCollection("posts")).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
+
+const [featured, ...rest] = posts;
+
+function formatDate(d) {
+  return new Date(d).toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" });
+}
 ---
 
-<Layout title="Blog — Your Site" description="Posts, notes, and updates.">
+<Layout title="Blog" description="Posts, notes, and updates.">
   <Fragment slot="head">
-    <link rel="alternate" type="application/rss+xml" title="Your Site Blog" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Blog" href="/rss.xml" />
   </Fragment>
   <section class="mx-auto max-w-5xl px-6 py-16 lg:px-8 lg:py-24">
     <div class="mb-12">
@@ -23,20 +29,63 @@ const posts = (await getCollection("posts")).sort(
     {posts.length === 0 ? (
       <p class="text-muted-foreground">No posts yet. Publish one via <code class="text-primary">/keystatic</code>.</p>
     ) : (
-      <div class="grid gap-6 sm:grid-cols-2">
-        {posts.map((post) => (
-          <a href={`/blog/${post.id}`} class="group block border border-border p-6 hover:border-primary transition-colors">
-            {post.data.cover && (
-              <img src={post.data.cover} alt={post.data.title} class="w-full h-40 object-cover mb-4" />
-            )}
-            <time class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              {new Date(post.data.date).toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" })}
-            </time>
-            <h2 class="mt-2 text-xl font-semibold text-foreground group-hover:text-primary transition-colors">{post.data.title}</h2>
-            {post.data.excerpt && <p class="mt-3 text-sm text-muted-foreground leading-relaxed">{post.data.excerpt}</p>}
+      <>
+        {featured && (
+          <a
+            href={`/blog/${featured.id}`}
+            class="group block border border-border p-8 hover:border-primary transition-colors mb-10"
+            style="border-radius: 2px"
+          >
+            <div class="grid gap-6 md:grid-cols-2 md:items-center">
+              {featured.data.cover ? (
+                <img src={featured.data.cover} alt={featured.data.title} class="w-full h-64 object-cover" style="border-radius: 2px" />
+              ) : (
+                <div class="w-full h-64 bg-muted flex items-center justify-center text-muted-foreground text-sm" style="border-radius: 2px">
+                  Featured
+                </div>
+              )}
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-primary">Featured</p>
+                <time class="mt-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  {formatDate(featured.data.date)}
+                </time>
+                <h2 class="mt-3 text-2xl font-semibold text-foreground group-hover:text-primary transition-colors leading-tight">
+                  {featured.data.title}
+                </h2>
+                {featured.data.excerpt && (
+                  <p class="mt-3 text-sm text-muted-foreground leading-relaxed">{featured.data.excerpt}</p>
+                )}
+                <span class="mt-4 inline-block text-sm font-semibold text-primary group-hover:underline">Read more &rarr;</span>
+              </div>
+            </div>
           </a>
-        ))}
-      </div>
+        )}
+
+        {rest.length > 0 && (
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {rest.map((post) => (
+              <a
+                href={`/blog/${post.id}`}
+                class="group block border border-border p-6 hover:border-primary transition-colors"
+                style="border-radius: 2px"
+              >
+                {post.data.cover && (
+                  <img src={post.data.cover} alt={post.data.title} class="w-full h-40 object-cover mb-4" style="border-radius: 2px" />
+                )}
+                <time class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  {formatDate(post.data.date)}
+                </time>
+                <h2 class="mt-2 text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                  {post.data.title}
+                </h2>
+                {post.data.excerpt && (
+                  <p class="mt-3 text-sm text-muted-foreground leading-relaxed">{post.data.excerpt}</p>
+                )}
+              </a>
+            ))}
+          </div>
+        )}
+      </>
     )}
   </section>
 </Layout>

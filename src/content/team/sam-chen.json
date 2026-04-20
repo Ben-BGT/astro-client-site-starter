@@ -1,0 +1,11 @@
+{
+  "name": "Sam Chen",
+  "role": "Design & Build",
+  "bio": "Designer-developer who turns strategy into working websites. Happiest at the intersection of type, code, and a good coffee.",
+  "photo": null,
+  "links": [
+    { "label": "Website", "url": "https://example.com" },
+    { "label": "LinkedIn", "url": "https://linkedin.com/in/sam-chen-example" }
+  ],
+  "order": 20
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Alex Rivera",
+  "role": "Founder",
+  "bio": "Fifteen years in design and brand strategy. Previously led brand at two direct-to-consumer startups before going solo in 2023.",
+  "photo": null,
+  "links": [
+    { "label": "LinkedIn", "url": "https://linkedin.com/in/alex-rivera-example" },
+    { "label": "Email", "url": "mailto:alex@example.com" }
+  ],
+  "order": 10
+}

@@ -1,0 +1,9 @@
+{
+  "heroOverline": "Welcome",
+  "heroHeadline": "A simple, fast site you actually own.",
+  "heroSubhead": "Write posts in the browser. Commits land in git. Deploy for a few dollars a month. Swap the copy, pick your colours, and you're live.",
+  "heroCtaText": "See our services",
+  "heroCtaUrl": "/services",
+  "featuredSectionTitle": "What I do",
+  "featuredSectionText": "A short line that introduces the services grid below. Edit this in /keystatic under Homepage."
+}

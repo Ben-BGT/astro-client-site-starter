@@ -1,0 +1,107 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Edit pricing directly in this file. This is intentionally NOT pulled from the
+// CMS so pricing changes go through a developer review before going live.
+const tiers = [
+  {
+    name: "Starter",
+    price: "$2,500",
+    priceSuffix: "one-off",
+    blurb: "For founders who need a single-page site that looks sharp and loads fast.",
+    features: [
+      "One-page site (up to 8 sections)",
+      "CMS setup for copy edits",
+      "Basic contact form",
+      "Launch in 2 weeks",
+    ],
+    ctaText: "Start with Starter",
+    ctaUrl: "/contact",
+    popular: false,
+  },
+  {
+    name: "Professional",
+    price: "$6,500",
+    priceSuffix: "one-off",
+    blurb: "The full template library. Services, team, blog, case studies, the lot.",
+    features: [
+      "Up to 10 pages",
+      "Full CMS across all content types",
+      "Blog with RSS",
+      "Basic analytics wired in",
+      "30-day post-launch support",
+    ],
+    ctaText: "Get Professional",
+    ctaUrl: "/contact",
+    popular: true,
+  },
+  {
+    name: "Enterprise",
+    price: "Custom",
+    priceSuffix: "",
+    blurb: "Bigger sites, integrations, and ongoing partnership. We scope to fit.",
+    features: [
+      "Unlimited pages",
+      "Custom integrations (CRM, email, payments)",
+      "Ongoing retainer available",
+      "Priority response times",
+      "Quarterly strategy reviews",
+    ],
+    ctaText: "Book a call",
+    ctaUrl: "/contact",
+    popular: false,
+  },
+];
+---
+
+<Layout title="Pricing" description="Three simple tiers. Fixed scope. No surprises.">
+  <section class="mx-auto max-w-5xl px-6 py-16 lg:px-8 lg:py-24">
+    <div class="text-center mb-16">
+      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Pricing</p>
+      <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">Simple, honest pricing</h1>
+      <p class="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+        Three tiers. Fixed scope. You know exactly what you're paying for before we start.
+      </p>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-3">
+      {tiers.map((tier) => (
+        <div
+          class={`bg-background border p-8 flex flex-col ${tier.popular ? "border-primary" : "border-border"}`}
+          style="border-radius: 2px"
+        >
+          {tier.popular && (
+            <p class="inline-block self-start bg-primary px-2 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground mb-4" style="border-radius: 2px">
+              Most Popular
+            </p>
+          )}
+          <h2 class="text-xl font-semibold text-foreground">{tier.name}</h2>
+          <p class="mt-2 text-sm text-muted-foreground">{tier.blurb}</p>
+          <div class="mt-6 flex items-baseline gap-2">
+            <span class="text-4xl font-semibold text-foreground">{tier.price}</span>
+            {tier.priceSuffix && <span class="text-sm text-muted-foreground">{tier.priceSuffix}</span>}
+          </div>
+          <ul class="mt-6 space-y-3 flex-1">
+            {tier.features.map((f) => (
+              <li class="flex items-start gap-2 text-sm text-foreground">
+                <span class="text-primary font-semibold">✓</span>
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+          <a
+            href={tier.ctaUrl}
+            class={`mt-8 inline-flex items-center justify-center px-6 py-3 text-sm font-semibold transition-colors ${tier.popular ? "bg-primary text-primary-foreground hover:bg-primary-hover" : "border border-border text-foreground hover:border-primary"}`}
+            style="border-radius: 2px"
+          >
+            {tier.ctaText}
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <p class="mt-12 text-center text-sm text-muted-foreground">
+      Not sure which tier fits? <a href="/contact" class="text-primary hover:underline">Book a 20 minute call</a> and we'll work it out together.
+    </p>
+  </section>
+</Layout>

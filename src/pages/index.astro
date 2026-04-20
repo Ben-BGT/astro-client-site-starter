@@ -1,75 +1,121 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import SectionHeading from "../components/SectionHeading.astro";
-import ProductCard from "../components/ProductCard.astro";
+import { reader } from "../lib/keystatic";
 
-const features = [
-  {
-    name: "Built on Astro",
-    description: "Static-first, fast by default, and ready to deploy anywhere Node runs.",
-    href: "/blog",
-  },
-  {
-    name: "Built-in CMS",
-    description: "Edit posts and pages at /keystatic. Every save commits straight to git.",
-    href: "/blog",
-  },
-  {
-    name: "Yours to keep",
-    description: "No database, no lock-in. Fork the repo and the whole site goes with it.",
-    href: "/about",
-  },
-];
+const home = await reader.singletons.homepage.read();
+const settings = await reader.singletons.siteSettings.read();
+
+const heroOverline = home?.heroOverline || "Welcome";
+const heroHeadline = home?.heroHeadline || "A simple, fast site you actually own.";
+const heroSubhead = home?.heroSubhead || "";
+const heroCtaText = home?.heroCtaText || "Read more";
+const heroCtaUrl = home?.heroCtaUrl || "/blog";
+const featuredTitle = home?.featuredSectionTitle || "What I do";
+const featuredText = home?.featuredSectionText || "";
+
+const services = (await getCollection("services")).sort((a, b) => a.data.order - b.data.order);
+const featuredTestimonials = (await getCollection("testimonials")).filter((t) => t.data.featured);
+
+const title = settings?.siteName || "Your Site";
+const description = settings?.description;
 ---
 
-<Layout title="Your Site" description="A fast, git-based Astro site with a built-in CMS.">
+<Layout title={title} description={description}>
   <section class="relative overflow-hidden border-b border-border">
     <div class="relative mx-auto max-w-5xl px-6 py-20 sm:py-24 lg:px-8 lg:py-28 text-center">
-      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Welcome</p>
+      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">{heroOverline}</p>
       <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-tight">
-        A simple, fast site you actually own.
+        {heroHeadline}
       </h1>
-      <p class="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-        Write posts in the browser. Commits land in git. Deploy for a few dollars a month. Swap the copy, pick your colours, and you're live.
-      </p>
+      {heroSubhead && (
+        <p class="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto whitespace-pre-line">{heroSubhead}</p>
+      )}
       <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="/blog" class="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors w-full sm:w-auto">
-          Read the blog
+        <a
+          href={heroCtaUrl}
+          class="inline-flex items-center justify-center bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors w-full sm:w-auto"
+          style="border-radius: 2px"
+        >
+          {heroCtaText}
         </a>
-        <a href="/contact" class="inline-flex items-center justify-center rounded-lg border border-border px-6 py-3 text-base font-semibold text-foreground hover:border-primary transition-colors w-full sm:w-auto">
+        <a
+          href="/contact"
+          class="inline-flex items-center justify-center border border-border px-6 py-3 text-base font-semibold text-foreground hover:border-primary transition-colors w-full sm:w-auto"
+          style="border-radius: 2px"
+        >
           Get in touch
         </a>
       </div>
     </div>
   </section>
 
-  <section class="py-16 sm:py-20">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <SectionHeading
-        overline="Why this stack"
-        title="Built for sites that need to stay simple"
-        description="Three pieces, nothing more. Everything else is a choice you can make later."
-        align="center"
-      />
-      <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {features.map((feature) => (
-          <ProductCard name={feature.name} description={feature.description} href={feature.href} />
-        ))}
+  {services.length > 0 && (
+    <section class="py-16 sm:py-20">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <SectionHeading
+          overline="Services"
+          title={featuredTitle}
+          description={featuredText}
+          align="center"
+        />
+        <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((service) => (
+            <a
+              href={`/services/${service.id}`}
+              class="group block bg-background border border-border p-6 hover:border-primary transition-colors"
+              style="border-radius: 2px"
+            >
+              {service.data.icon && (
+                <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">{service.data.icon}</p>
+              )}
+              <h3 class="text-lg font-semibold text-foreground group-hover:text-primary">{service.data.title}</h3>
+              {service.data.summary && (
+                <p class="mt-2 text-sm text-muted-foreground">{service.data.summary}</p>
+              )}
+            </a>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  )}
 
-  <section class="py-16 sm:py-20 bg-muted border-t border-border">
+  {featuredTestimonials.length > 0 && (
+    <section class="py-16 sm:py-20 bg-muted border-t border-border">
+      <div class="mx-auto max-w-5xl px-6 lg:px-8">
+        <SectionHeading overline="What clients say" title="Words from the people I've worked with" align="center" />
+        <div class="mt-12 grid gap-6 md:grid-cols-2">
+          {featuredTestimonials.slice(0, 2).map((t) => (
+            <figure class="bg-background border border-border p-6" style="border-radius: 2px">
+              <blockquote class="text-base text-foreground leading-relaxed">&ldquo;{t.data.quote}&rdquo;</blockquote>
+              <figcaption class="mt-4 text-sm text-muted-foreground">
+                <span class="font-semibold text-foreground">{t.data.author}</span>
+                {t.data.role && <span>, {t.data.role}</span>}
+                {t.data.company && <span> &middot; {t.data.company}</span>}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="py-16 sm:py-20 border-t border-border">
     <div class="mx-auto max-w-3xl px-6 lg:px-8 text-center">
       <h2 class="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-        Ready to make it yours?
+        Ready to get started?
       </h2>
       <p class="mt-4 text-lg text-muted-foreground">
-        Update the copy on this page, swap the logo, adjust the colours in <code class="text-primary">global.css</code>, and publish. The README covers the rest.
+        A 20 minute call is the fastest way to find out if we're a fit.
       </p>
       <div class="mt-8">
-        <a href="/blog" class="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors">
-          See an example post
+        <a
+          href="/contact"
+          class="inline-flex items-center justify-center bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
+          style="border-radius: 2px"
+        >
+          Book a call
         </a>
       </div>
     </div>

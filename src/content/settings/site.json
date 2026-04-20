@@ -1,0 +1,11 @@
+{
+  "siteName": "Your Site",
+  "tagline": "Fast, simple websites you actually own.",
+  "description": "A client-ready Astro site with a built-in CMS. Git-based content, zero lock-in.",
+  "contactEmail": "hello@example.com",
+  "socialLinks": [
+    { "label": "LinkedIn", "url": "https://linkedin.com/in/yourhandle" },
+    { "label": "Twitter", "url": "https://twitter.com/yourhandle" }
+  ],
+  "footerText": "Your Company."
+}

@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const services = await getCollection("services");
+  return services.map((service) => ({
+    params: { slug: service.id },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const { Content } = await render(service);
+---
+
+<Layout title={service.data.title} description={service.data.summary}>
+  <article class="mx-auto max-w-3xl px-6 py-16 lg:px-8 lg:py-24">
+    <a href="/services" class="text-sm font-semibold text-primary hover:underline">&larr; All services</a>
+    <header class="mt-8 mb-12">
+      {service.data.icon && (
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{service.data.icon}</p>
+      )}
+      <h1 class="mt-2 text-4xl font-semibold tracking-tight text-foreground sm:text-5xl leading-tight">{service.data.title}</h1>
+      {service.data.summary && <p class="mt-4 text-lg text-muted-foreground leading-relaxed">{service.data.summary}</p>}
+    </header>
+    <div class="prose prose-lg max-w-none prose-headings:font-semibold prose-headings:text-foreground prose-p:text-foreground prose-a:text-primary prose-strong:text-foreground">
+      <Content />
+    </div>
+    <div class="mt-16 border-t border-border pt-8 text-center">
+      <p class="text-muted-foreground">Sound like what you need?</p>
+      <a
+        href="/contact"
+        class="mt-4 inline-flex items-center justify-center bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
+        style="border-radius: 2px"
+      >
+        Get in touch
+      </a>
+    </div>
+  </article>
+</Layout>
