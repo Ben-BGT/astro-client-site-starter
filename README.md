@@ -1,73 +1,87 @@
 # astro-client-site-starter
 
-A client-ready Astro site with a built-in CMS and a real library of page templates. Git-based content, zero lock-in. Clone it, swap the branding, and hand a client a site they can actually edit themselves.
+A client-ready Astro site with a built-in CMS, so a business owner can edit their own website without touching code.
 
-## What it is
+## Live demo
 
-A small, opinionated starter that pairs:
+[https://astro-starter-demo.vercel.app](https://astro-starter-demo.vercel.app)
 
-- **Astro** for fast static pages and routing
-- **Keystatic** for a friendly CMS editor at `/keystatic`
-- **Tailwind CSS** for styling with theme tokens you can rebrand in minutes
-- **Markdoc** for Markdown content with richer components when you need them
+(Demo URL will be updated once the site is deployed.)
 
-The client edits content in their browser, the edits save straight into the git repo, and the site redeploys. No database. No monthly CMS fee. No lock-in.
+## Screenshots
 
-## Quick start
+Public site, CMS editor, and a page rendered from the CMS:
+
+![Home page](docs/screenshots/home.png)
+
+![Keystatic CMS](docs/screenshots/keystatic.png)
+
+![Services page](docs/screenshots/services.png)
+
+## 5-minute quickstart
 
 ```bash
-git clone <your-fork-url> my-client-site
+git clone https://github.com/mikerhodesideas/astro-client-site-starter.git my-client-site
 cd my-client-site
 npm install
 npm run dev
 ```
 
-Open `http://localhost:4321` for the site and `http://localhost:4321/keystatic` for the CMS.
+Then:
 
-## What you can edit via `/keystatic`
+1. Open `http://localhost:4321/` — the public site.
+2. Open `http://localhost:4321/keystatic` — the CMS.
+3. Click `Homepage`, change the hero headline, hit `Save`.
+4. Flip back to the public tab and refresh. Your edit is live.
+
+That's the full loop. Clone, run, edit, see it change. From here, customise the branding and add a client's real content.
+
+## What you can edit via /keystatic
 
 Open `/keystatic` in the browser and the editor groups everything into two sections.
 
-### Site content (collections)
+### Collections (lists)
 
-- **Posts** — blog posts. Title, date, excerpt, cover image, markdoc body.
-- **Services** — what the business does. Title, summary, icon (emoji or short label), sort order, markdoc body.
+- **Posts** — blog posts. Title, date, excerpt, cover image, Markdoc body.
+- **Services** — what the business does. Title, summary, icon, sort order, Markdoc body.
 - **Team** — people profiles. Name, role, bio, photo, social links, sort order.
-- **Testimonials** — client quotes. Author, quote, role, company, optional photo, `featured` flag for homepage/landing.
-- **Case studies** — project write-ups. Title, client, summary, metrics (label + value array), cover image, markdoc body.
+- **Testimonials** — client quotes. Author, quote, role, company, optional photo, `featured` flag for the homepage.
+- **Case studies** — project write-ups. Title, client, summary, metrics, cover image, Markdoc body.
 
-### Configuration (singletons)
+### Singletons (one-of-a-kind records)
 
-- **Site settings** — site name, tagline, meta description, contact email, social links, footer text. Drives the header, footer, and contact page.
-- **Homepage** — hero overline, headline, subhead, CTA text and URL, featured section title and text.
-- **About page** — title, tagline, and full markdoc body for `/about`.
-
-Singletons are one-of-a-kind records (there's only ever one homepage). Collections are lists (add as many posts, services, or team members as you like).
+- **Site settings** — site name, tagline, meta description, contact email, social links, footer text.
+- **Homepage** — hero copy, CTA, featured-section intro.
+- **About page** — title, tagline, and the full Markdoc body for `/about`.
 
 ## Page templates included
 
-| Page | File | Content source |
-|------|------|----------------|
-| Home | `src/pages/index.astro` | Singleton: `homepage` + collections: `services`, `testimonials` (featured only) |
-| Services index | `src/pages/services/index.astro` | Collection: `services` (sorted by `order`) |
-| Service detail | `src/pages/services/[...slug].astro` | Collection: `services` (one entry) |
-| Team | `src/pages/team.astro` | Collection: `team` (sorted by `order`) |
-| Pricing | `src/pages/pricing.astro` | Static (edit the file directly) |
-| Landing example | `src/pages/landing-example.astro` | Static copy + collection: `testimonials` |
-| Blog index | `src/pages/blog/index.astro` | Collection: `posts` (featured first, rest in grid) |
-| Blog detail | `src/pages/blog/[...slug].astro` | Collection: `posts` (with reading time) |
-| About | `src/pages/about.astro` | Singleton: `aboutPage` |
-| Contact | `src/pages/contact.astro` | Singleton: `siteSettings.contactEmail` |
-| 404 | `src/pages/404.astro` | Static |
-| RSS | `src/pages/rss.xml.js` | Collection: `posts` |
+| Route | Content source | Intended use |
+|-------|----------------|--------------|
+| `/` | Singleton `homepage` + collections `services` and featured `testimonials` | Homepage |
+| `/services` | Collection `services` (sorted by `order`) | Services index |
+| `/services/[slug]` | Collection `services` (one entry) | Service detail page |
+| `/team` | Collection `team` | Who's behind the business |
+| `/pricing` | Static `.astro` file | Pricing (deliberately not CMS-driven) |
+| `/landing-example` | Static copy + collection `testimonials` | Reusable conversion landing page |
+| `/blog` | Collection `posts` | Blog index |
+| `/blog/[slug]` | Collection `posts` | Individual blog post |
+| `/about` | Singleton `aboutPage` | About page |
+| `/contact` | Singleton `siteSettings.contactEmail` | Contact page |
+| `/404` | Static | Not-found page |
+| `/rss.xml` | Collection `posts` | RSS feed |
 
-Pricing is deliberately static, not CMS-driven. Pricing changes should go through a developer review rather than a client update, so the copy lives in the `.astro` file.
+## Customising for a client
 
-The landing page example (`/landing-example`) is a conversion-focused single-page template (hero / problem / solution / features / testimonials / pricing / FAQ / final CTA). Use it as a scaffold for client landing pages. Testimonials pull from the CMS so the client can swap them without touching code.
+See [CUSTOMIZING.md](CUSTOMIZING.md) for colours, fonts, layout, and how to add new CMS collections.
 
-## Adding a new page type (5 steps)
+## Deploying
 
-Say the client wants a new "Events" section.
+See [DEPLOY.md](DEPLOY.md) for Vercel, Netlify, and Cloudflare Pages, plus the steps to switch Keystatic from local mode to GitHub mode so the client can edit the live site.
+
+## Adding a new page type
+
+Say the client wants an `Events` section. Five steps.
 
 1. **Add the collection to `keystatic.config.ts`:**
    ```ts
@@ -85,74 +99,31 @@ Say the client wants a new "Events" section.
      },
    }),
    ```
-2. **Register it in `src/content.config.ts`:**
-   ```ts
-   const events = defineCollection({
-     loader: glob({ pattern: "**/*.mdoc", base: "./src/content/events" }),
-     schema: z.object({
-       title: z.string(),
-       date: z.coerce.date(),
-       location: z.string().optional(),
-     }),
-   });
-   // and add `events` to the exported `collections` object.
-   ```
-3. **Create `src/pages/events/index.astro`** that calls `getCollection('events')` and renders a list. Copy `src/pages/services/index.astro` as a starting point.
-4. **Create `src/pages/events/[...slug].astro`** that renders a single entry. Copy `src/pages/services/[...slug].astro`.
-5. **Seed one entry** by running `npm run dev`, opening `/keystatic`, clicking `Events` > `Add Event`, filling in the fields, and saving. A new `.mdoc` file appears in `src/content/events/`.
+2. **Register it in `src/content.config.ts`** alongside the other collections.
+3. **Create `src/pages/events/index.astro`** — a list page. Copy `src/pages/services/index.astro` as a starting point.
+4. **Create `src/pages/events/[...slug].astro`** — a detail page. Copy `src/pages/services/[...slug].astro`.
+5. **Seed one entry** — run `npm run dev`, open `/keystatic`, click `Events`, `Add Event`, save. A new `.mdoc` file appears in `src/content/events/`.
 
-## How the CMS works
+## FAQ
 
-Keystatic runs as part of the site at `/keystatic`. Editors see a normal-looking admin UI with lists and forms. When they hit save, Keystatic writes a file (markdoc or JSON) into `src/content/` and commits it to git. The build then picks up the new content on the next deploy.
+**Can clients edit without my help?**
+Yes. Once the site is deployed with Keystatic in GitHub mode, they sign in with GitHub and edit every collection and singleton from the browser. No dev involvement needed for routine content changes.
 
-In local mode (the default in this starter) saves write to your filesystem. In production you switch Keystatic's storage to GitHub, and editors log in with their GitHub account to edit the live site from their browser. Details below.
+**What if the client leaves?**
+Everything is theirs. The repo, the domain, the hosting account (if set up in their name), the content files. There's no database to migrate, no proprietary CMS to exit. They clone the repo and keep going, or they hand it to another developer.
 
-## Theming
+**How do I charge?**
+Common patterns: a flat build fee, plus an optional monthly retainer for hosting, monitoring, and changes the client doesn't want to make themselves. Because there's no CMS licence fee, the margin's yours.
 
-All the colour and font tokens live in `src/styles/global.css` inside the `@theme { ... }` block. Change `--color-primary`, `--color-accent`, and the neutrals, and the whole site follows. The starter uses Oxanium as a default but falls back to `system-ui`, so if you delete the Google Fonts preconnect in `Layout.astro` the site still looks fine. Clients can pick their own font at any time.
+**Do I need a server?**
+No. The site deploys as static-first with a small Node adapter for Keystatic. Vercel, Netlify, and Cloudflare Pages all run it on their free or cheap tiers.
 
-The starter uses only generic tokens (`primary`, `foreground`, `muted`, `border`). Swap colours to match any brand in seconds.
+**How do I rebrand?**
+Edit the five colour tokens in `src/styles/global.css`, swap the font stack, and change `ui.brand.name` in `keystatic.config.ts`. Full walkthrough in [CUSTOMIZING.md](CUSTOMIZING.md).
 
-Design rules baked into the templates:
-- No rounded corners. Cards use `border-radius: 2px` max.
-- No gradients.
-- No em dashes in copy.
+## Credits
 
-## Deploying
-
-This starter uses the Astro Node adapter in standalone mode, so it runs on any Node host. The easiest options:
-
-- **Replit** — import the repo, set the run command to `npm run build && node ./dist/server/entry.mjs`.
-- **Netlify** — connect the repo and deploy.
-- **Cloudflare Pages** — connect the repo, pick the Astro framework preset.
-
-For client work, create the hosting account in the client's name. That way the whole stack (domain, repo, host) stays with them if you part ways.
-
-Before deploying, open `astro.config.mjs` and set `site: 'https://yourclient.com'` so the sitemap and RSS feed use the right URL.
-
-## Going to production with GitHub OAuth for Keystatic
-
-`storage: { kind: 'local' }` in `keystatic.config.ts` only works when the site is running on someone's laptop. To let the client edit the live site from their browser:
-
-1. Create a GitHub OAuth App in the client's GitHub account. Callback URL: `https://yourclient.com/api/keystatic/github/oauth/callback`.
-2. Add the client ID and secret as environment variables on your host (`KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`).
-3. In `keystatic.config.ts`, switch storage to:
-   ```ts
-   storage: {
-     kind: 'github',
-     repo: { owner: 'client-github-user', name: 'client-site-repo' },
-   },
-   ```
-4. Deploy. Editors visit `/keystatic`, click `Sign in with GitHub`, and can edit the live site from any browser.
-
-Full Keystatic GitHub setup docs: https://keystatic.com/docs/github-model
-
-## Why this stack
-
-- **Git-based content.** The repo is the site. Nothing to export, nothing to migrate.
-- **No database.** Hosting stays cheap and there's nothing to back up or patch.
-- **Astro is fast.** Static HTML by default, almost no JavaScript shipped to the browser.
-- **Template library.** Services, team, blog, testimonials, case studies, landing pages, pricing. A client can run most of a small business from this set of pages on day one.
+Based on the pattern I use at [mikerhodes.com.au](https://mikerhodes.com.au). Shared with the Ads to AI community.
 
 ## License
 
