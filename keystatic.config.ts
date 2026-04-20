@@ -46,6 +46,104 @@ export default config({
           description: 'Short line shown in the footer. Year is added automatically.',
           defaultValue: 'Your Company.',
         }),
+        design: fields.object(
+          {
+            themePreset: fields.select({
+              label: 'Theme preset',
+              description:
+                'Starting point for colours, fonts and radius. The overrides below win over whatever the preset ships with.',
+              options: [
+                { label: 'Editorial (serif, magazine-grade)', value: 'editorial' },
+                { label: 'Startup (clean sans, blue)', value: 'startup' },
+                { label: 'Agency (mono, monochrome, orange accent)', value: 'agency' },
+                { label: 'Boutique (warm sepia, gold)', value: 'boutique' },
+                { label: 'Brutalist (black/white, heavy)', value: 'brutalist' },
+                { label: 'Custom (no preset, pure overrides)', value: 'custom' },
+              ],
+              defaultValue: 'startup',
+            }),
+            primaryColor: fields.text({
+              label: 'Primary color (hex)',
+              description:
+                'Optional. Overrides the preset primary. Example: #2563EB. Leave blank to keep the preset default.',
+              validation: { length: { min: 0, max: 9 } },
+            }),
+            primaryHoverColor: fields.text({
+              label: 'Primary hover color (hex)',
+              description: 'Optional. Slightly darker than primary. Example: #1D4ED8.',
+              validation: { length: { min: 0, max: 9 } },
+            }),
+            accentColor: fields.text({
+              label: 'Accent color (hex)',
+              description: 'Optional. Used sparingly for callouts and eyebrows.',
+              validation: { length: { min: 0, max: 9 } },
+            }),
+            fontBody: fields.text({
+              label: 'Body font stack',
+              description:
+                'CSS font-family value. Example: "Inter, system-ui, sans-serif". Remember to set the Google Fonts URL below if you reference a web font.',
+            }),
+            fontDisplay: fields.text({
+              label: 'Display font stack (headings)',
+              description: 'CSS font-family value for h1 through h6.',
+            }),
+            googleFontsHref: fields.url({
+              label: 'Google Fonts URL (optional)',
+              description:
+                'Paste the full import URL from fonts.google.com, e.g. https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap',
+            }),
+            radius: fields.select({
+              label: 'Corner radius',
+              description: 'Site-wide rounded-corner sharpness.',
+              options: [
+                { label: 'Sharp (0px)', value: '0' },
+                { label: 'Near-sharp (2px)', value: '2' },
+                { label: 'Subtle (4px)', value: '4' },
+                { label: 'Soft (8px)', value: '8' },
+              ],
+              defaultValue: '2',
+            }),
+            headerVariant: fields.select({
+              label: 'Header variant',
+              description:
+                'Minimal: name left, nav right. Centered: name above nav. Split: nav flanking centered name.',
+              options: [
+                { label: 'Minimal (default)', value: 'minimal' },
+                { label: 'Centered', value: 'centered' },
+                { label: 'Split', value: 'split' },
+              ],
+              defaultValue: 'minimal',
+            }),
+            footerVariant: fields.select({
+              label: 'Footer variant',
+              description:
+                'Simple: one-line. Columns: three columns of links and contact. Minimal: copyright only.',
+              options: [
+                { label: 'Simple (default)', value: 'simple' },
+                { label: 'Columns', value: 'columns' },
+                { label: 'Minimal', value: 'minimal' },
+              ],
+              defaultValue: 'simple',
+            }),
+            homepageHeroVariant: fields.select({
+              label: 'Homepage hero variant',
+              description:
+                'Left-aligned: current default. Centered: stacked & centered. Split with image: text left, photo right. Dark bold: editorial statement hero.',
+              options: [
+                { label: 'Left-aligned (default)', value: 'left-aligned' },
+                { label: 'Centered', value: 'centered' },
+                { label: 'Split with image', value: 'split-with-image' },
+                { label: 'Dark bold', value: 'dark-bold' },
+              ],
+              defaultValue: 'left-aligned',
+            }),
+          },
+          {
+            label: 'Design',
+            description:
+              'Colors, fonts, radius, and Header/Footer/Hero variants. Pick a preset for a starting point, then fine-tune.',
+          }
+        ),
       },
     }),
     homepage: singleton({
@@ -66,6 +164,13 @@ export default config({
         }),
         heroCtaText: fields.text({ label: 'Hero CTA text', defaultValue: 'Read the blog' }),
         heroCtaUrl: fields.text({ label: 'Hero CTA URL', defaultValue: '/blog' }),
+        heroImage: fields.image({
+          label: 'Hero image (optional)',
+          description:
+            'Used by the "Split with image" hero variant. Ignored by other variants.',
+          directory: 'public/images/homepage',
+          publicPath: '/images/homepage/',
+        }),
         featuredSectionTitle: fields.text({
           label: 'Featured section title',
           defaultValue: 'What I do',

@@ -1,0 +1,63 @@
+---
+/*
+  Columns footer. Three columns: About, Links, Connect.
+  Good for content-heavy sites and businesses with multiple
+  service lines, many pages, or an email list.
+*/
+import { reader } from "../../lib/keystatic";
+
+const settings = await reader.singletons.siteSettings.read();
+const siteName = settings?.siteName || "Your Site";
+const tagline = settings?.tagline || "";
+const footerText = settings?.footerText || "Your Company.";
+const contactEmail = settings?.contactEmail || "";
+const socialLinks = settings?.socialLinks || [];
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border/40 bg-background py-16">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="grid grid-cols-1 gap-10 sm:grid-cols-3">
+      <div>
+        <div class="flex items-center gap-2">
+          <img src="/favicon.svg" alt={siteName} width="20" height="20" class="h-5 w-5" />
+          <span class="text-base font-semibold text-foreground">{siteName}</span>
+        </div>
+        {tagline && (
+          <p class="mt-3 text-sm text-muted-foreground max-w-xs">{tagline}</p>
+        )}
+      </div>
+
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Links</h3>
+        <ul class="mt-4 space-y-2">
+          <li><a href="/services" class="text-sm text-foreground hover:text-primary">Services</a></li>
+          <li><a href="/team" class="text-sm text-foreground hover:text-primary">Team</a></li>
+          <li><a href="/blog" class="text-sm text-foreground hover:text-primary">Blog</a></li>
+          <li><a href="/about" class="text-sm text-foreground hover:text-primary">About</a></li>
+          <li><a href="/contact" class="text-sm text-foreground hover:text-primary">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Connect</h3>
+        <ul class="mt-4 space-y-2">
+          {contactEmail && (
+            <li><a href={`mailto:${contactEmail}`} class="text-sm text-foreground hover:text-primary">{contactEmail}</a></li>
+          )}
+          {socialLinks.map((link) => (
+            <li>
+              <a href={link.url} class="text-sm text-foreground hover:text-primary" target="_blank" rel="noopener noreferrer">
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 border-t border-border pt-6">
+      <p class="text-xs text-muted-foreground">&copy; {year} {footerText}</p>
+    </div>
+  </div>
+</footer>

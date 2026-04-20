@@ -1,0 +1,68 @@
+---
+/*
+  Dark bold hero. Inverted scheme, oversize type, accent eyebrow.
+  Editorial, confident, opinionated. Good for agencies, studios,
+  creators, and anyone who wants the home page to feel like a
+  statement rather than a product shelf.
+
+  Uses token-driven colours via inline style so the variant still
+  follows the current theme (accent + foreground inverted).
+*/
+interface Props {
+  overline?: string;
+  headline: string;
+  subhead?: string;
+  ctaText?: string;
+  ctaUrl?: string;
+}
+
+const { overline, headline, subhead, ctaText, ctaUrl } = Astro.props;
+---
+
+<section
+  class="relative overflow-hidden border-b border-border"
+  style="background: var(--color-foreground); color: var(--color-background);"
+>
+  <div class="relative mx-auto max-w-6xl px-6 py-24 sm:py-28 lg:px-8 lg:py-32">
+    {overline && (
+      <p
+        class="text-xs font-bold uppercase tracking-[0.2em] mb-6"
+        style="color: var(--color-accent);"
+      >
+        {overline}
+      </p>
+    )}
+    <h1
+      class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight max-w-5xl"
+      style="color: var(--color-background);"
+    >
+      {headline}
+    </h1>
+    {subhead && (
+      <p
+        class="mt-8 text-lg sm:text-xl max-w-2xl whitespace-pre-line"
+        style="color: var(--color-background); opacity: 0.7;"
+      >
+        {subhead}
+      </p>
+    )}
+    <div class="mt-12 flex flex-col sm:flex-row items-start gap-4">
+      {ctaText && ctaUrl && (
+        <a
+          href={ctaUrl}
+          class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold transition-opacity hover:opacity-80 w-full sm:w-auto"
+          style="background: var(--color-background); color: var(--color-foreground); border-radius: var(--radius-md);"
+        >
+          {ctaText}
+        </a>
+      )}
+      <a
+        href="/contact"
+        class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold transition-opacity hover:opacity-80 w-full sm:w-auto"
+        style="border: 1px solid var(--color-background); color: var(--color-background); border-radius: var(--radius-md);"
+      >
+        Get in touch
+      </a>
+    </div>
+  </div>
+</section>

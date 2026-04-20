@@ -1,0 +1,23 @@
+/*
+  Editorial theme. Serif display face, restrained neutrals, a single
+  deep red accent, magazine-grade whitespace. Think long-form
+  publication, not SaaS landing page.
+*/
+:root {
+  --color-background: #fbfaf7;
+  --color-foreground: #1a1a1a;
+  --color-primary: #8B1A1A;
+  --color-primary-hover: #6F1515;
+  --color-primary-foreground: #ffffff;
+  --color-accent: #8B1A1A;
+  --color-muted: #f1efe9;
+  --color-muted-foreground: #5a5450;
+  --color-border: #d9d4c7;
+
+  --font-body: "Georgia", "Times New Roman", "Charter", serif;
+  --font-display: "Georgia", "Times New Roman", "Charter", serif;
+
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+}

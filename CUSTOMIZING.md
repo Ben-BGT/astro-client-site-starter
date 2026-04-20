@@ -2,9 +2,41 @@
 
 How to turn the generic starter into a site that looks and feels like a specific client's brand.
 
+## Editing the theme from the CMS
+
+From v0.3.0 onwards, the client can change colors, fonts, radius, and pick Header / Footer / Hero variants directly from `/keystatic`. No code edits, no deploys beyond a normal save-and-rebuild.
+
+### Walkthrough: rebrand in four clicks
+
+1. Open `/keystatic` in the browser.
+2. Click **Site settings** in the sidebar, then scroll to the **Design** section.
+3. Pick a theme preset for a starting point (Startup, Editorial, Agency, Boutique, Brutalist, or Custom).
+4. Optionally override:
+   - **Primary color** — hex like `#E11D48`. Overrides the preset primary.
+   - **Primary hover color** — usually a slightly darker shade.
+   - **Accent color** — used sparingly for eyebrows and callouts.
+   - **Body font stack** and **Display font stack** — full CSS font-family strings (e.g. `Inter, system-ui, sans-serif`). Pair with the Google Fonts URL below if loading a web font.
+   - **Google Fonts URL** — paste the full `https://fonts.googleapis.com/css2?...` URL.
+   - **Corner radius** — Sharp (0px), Near-sharp (2px), Subtle (4px), Soft (8px).
+   - **Header variant** — Minimal, Centered, Split.
+   - **Footer variant** — Simple, Columns, Minimal.
+   - **Homepage hero variant** — Left-aligned, Centered, Split with image, Dark bold.
+5. Hit **Save**. The browser tab running `npm run dev` refreshes and the site is rebranded.
+
+### How the overrides and presets interact
+
+- `global.css` sets sensible defaults.
+- The chosen preset (`public/themes/<preset>.css`) loads next and sets its opinionated tokens.
+- Anything typed into the Design fields in Keystatic wins last. Blanks mean "keep whatever the preset gave me".
+- So `themePreset: boutique` + `primaryColor: #0A0A0A` = boutique look but with a black primary.
+
+Pick `Custom` in the theme preset dropdown to skip the preset entirely and run pure global defaults plus your own overrides.
+
 ## Theme presets (one-line rebrand)
 
-The starter ships with five ready-made theme presets. Swap the active theme by changing a single import line in `src/layouts/Layout.astro`.
+The recommended way to swap presets is from Keystatic (see above). This section covers the code-level mechanism for developers who want to understand or extend it.
+
+The starter ships with five ready-made theme presets. Swap the active theme from Keystatic, or hard-code it by editing `src/content/settings/site.json`.
 
 | Preset | Feel |
 |--------|------|
@@ -16,23 +48,9 @@ The starter ships with five ready-made theme presets. Swap the active theme by c
 
 ### How to swap
 
-Open `src/layouts/Layout.astro` and change the theme import near the top:
+Open `/keystatic` → Site settings → Design → Theme preset and pick a new value. Save. Every button, card, border radius, font, and colour follows the new theme. No component edits required.
 
-```ts
-// Change this one line to rebrand the whole site.
-import "../styles/themes/startup.css";
-```
-
-to any of:
-
-```ts
-import "../styles/themes/editorial.css";
-import "../styles/themes/agency.css";
-import "../styles/themes/boutique.css";
-import "../styles/themes/brutalist.css";
-```
-
-Save. Every button, card, border radius, font, and colour follows the new theme. No component edits required.
+Under the hood, `Layout.astro` reads `siteSettings.design.themePreset` and loads the matching CSS from `public/themes/<preset>.css`.
 
 ### How the theme system works
 
@@ -114,14 +132,47 @@ When `fontsHref` is set, the Layout emits the standard preconnect + stylesheet t
 
 Whichever you pick, make sure your active theme's `--font-body` and `--font-display` put the new font first in the stack.
 
+## Header, Footer, and Hero variants
+
+Three Header variants, three Footer variants, four homepage Hero variants. All pick-able from Keystatic → Site settings → Design.
+
+### Header variants (`src/components/headers/`)
+
+| Variant | When to use |
+|---------|------------|
+| `minimal` | Default. Name left, nav right. Works for most business sites. |
+| `centered` | Name centered on top, nav below. Best for boutique brands, blogs, editorial. |
+| `split` | Three nav items, centered name, three more nav items. Best for premium / luxury. |
+
+### Footer variants (`src/components/footers/`)
+
+| Variant | When to use |
+|---------|------------|
+| `simple` | Default. One row: brand + copyright + quick links. |
+| `columns` | Three columns: About, Links, Connect. Good for content-heavy sites. |
+| `minimal` | Just copyright on one line. Good for portfolios and landing pages. |
+
+### Homepage hero variants (`src/components/heroes/`)
+
+| Variant | When to use |
+|---------|------------|
+| `left-aligned` | Default. Text left, CTAs below. Practical, works everywhere. |
+| `centered` | Text centered and stacked. Calmer, balanced, good for landing pages. |
+| `split-with-image` | Text left, photo/illustration right. Good for products and personal brands. Set the **Hero image** field on the Homepage singleton. Falls back to a subtle placeholder if blank. |
+| `dark-bold` | Inverted background, oversize type, accent eyebrow. Statement hero for agencies and studios. |
+
+All variants inherit the active theme tokens. Switching the corner-radius selector, for example, updates every variant's cards and buttons without touching a component file.
+
 ## Layout structure
 
-The site's chrome lives in two components:
+The site's chrome lives in two dispatcher components that read `siteSettings.design` and render the right variant:
 
-- `src/components/Header.astro` — top navigation. Edit the links here, and the logo / brand mark.
-- `src/components/Footer.astro` — footer. Reads from `siteSettings` in the CMS for footer text and social links, so most footer edits happen in `/keystatic`.
+- `src/components/Header.astro` — picks from `headers/HeaderMinimal.astro`, `headers/HeaderCentered.astro`, or `headers/HeaderSplit.astro`.
+- `src/components/Footer.astro` — picks from `footers/FooterSimple.astro`, `footers/FooterColumns.astro`, or `footers/FooterMinimal.astro`.
 
-`src/layouts/Layout.astro` is the wrapper every page uses. That's where the active theme import, `<head>`, font loading, and body structure live. Edit it when you need to add global scripts, change meta tags, or swap themes.
+`src/pages/index.astro` does the same for the homepage hero, picking from the four files in `src/components/heroes/`.
+
+`src/layouts/Layout.astro` is the wrapper every page uses. That's where the theme preset stylesheet, CMS overrides, Google Fonts, `<head>`, and body structure live. Edit it when you need to add global scripts or meta tags.
 
 ## Adding pages
 

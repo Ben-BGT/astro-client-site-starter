@@ -1,8 +1,5 @@
 ---
 import "../styles/global.css";
-// Theme preset. Swap this one line to rebrand the site.
-// Options: editorial | startup | agency | boutique | brutalist
-import "../styles/themes/startup.css";
 
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
@@ -15,8 +12,8 @@ interface Props {
   /**
    * Optional Google Fonts (or any external stylesheet) URL. When set,
    * the layout emits the standard preconnect + stylesheet tags in the
-   * head. Pair this with a matching `--font-body` / `--font-display`
-   * in your active theme preset.
+   * head. Overrides the CMS value. Leave null to fall back to
+   * siteSettings.design.googleFontsHref.
    */
   fontsHref?: string | null;
 }
@@ -31,6 +28,38 @@ const {
   hideChrome = false,
   fontsHref = null,
 } = Astro.props;
+
+// Design tokens from the CMS. Every field is optional — blanks mean
+// "fall back to whatever the theme preset (or global.css default) sets".
+const design = settings?.design;
+const themePreset = design?.themePreset || "startup";
+const primaryColor = design?.primaryColor?.trim();
+const primaryHoverColor = design?.primaryHoverColor?.trim();
+const accentColor = design?.accentColor?.trim();
+const fontBody = design?.fontBody?.trim();
+const fontDisplay = design?.fontDisplay?.trim();
+const radius = design?.radius;
+const cmsFontsHref = design?.googleFontsHref?.trim();
+const effectiveFontsHref = fontsHref ?? (cmsFontsHref || null);
+
+// Build CSS override block. Only emit a line for fields the client
+// actually set. Radius always emits because it has a default.
+const overrideLines: string[] = [];
+if (primaryColor) overrideLines.push(`--color-primary: ${primaryColor};`);
+if (primaryHoverColor) overrideLines.push(`--color-primary-hover: ${primaryHoverColor};`);
+if (accentColor) overrideLines.push(`--color-accent: ${accentColor};`);
+if (fontBody) overrideLines.push(`--font-body: ${fontBody};`);
+if (fontDisplay) overrideLines.push(`--font-display: ${fontDisplay};`);
+if (radius !== undefined && radius !== null && radius !== "") {
+  overrideLines.push(`--radius-sm: ${radius}px;`);
+  overrideLines.push(`--radius-md: ${radius}px;`);
+  overrideLines.push(`--radius-lg: ${radius}px;`);
+}
+const overrideCss = overrideLines.length ? `:root { ${overrideLines.join(" ")} }` : "";
+
+// Theme preset CSS is served from /public/themes/ so it loads after
+// global.css but before inline overrides. "custom" skips preset entirely.
+const themeHref = themePreset === "custom" ? null : `/themes/${themePreset}.css`;
 ---
 
 <!doctype html>
@@ -46,11 +75,15 @@ const {
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    {fontsHref && (
+    {themeHref && <link rel="stylesheet" href={themeHref} />}
+
+    {overrideCss && <style is:inline set:html={overrideCss}></style>}
+
+    {effectiveFontsHref && (
       <>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href={fontsHref} rel="stylesheet" />
+        <link href={effectiveFontsHref} rel="stylesheet" />
       </>
     )}
 

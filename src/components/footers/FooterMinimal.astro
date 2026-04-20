@@ -1,0 +1,18 @@
+---
+/*
+  Minimal footer. Copyright only. Ultra sparse.
+  Good for portfolios, landing-page sites, and single-product pages
+  where the footer shouldn't fight for attention.
+*/
+import { reader } from "../../lib/keystatic";
+
+const settings = await reader.singletons.siteSettings.read();
+const footerText = settings?.footerText || "Your Company.";
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border/40 bg-background py-6">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <p class="text-center text-xs text-muted-foreground">&copy; {year} {footerText}</p>
+  </div>
+</footer>

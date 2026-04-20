@@ -2,6 +2,10 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import SectionHeading from "../components/SectionHeading.astro";
+import HeroLeftAligned from "../components/heroes/HeroLeftAligned.astro";
+import HeroCentered from "../components/heroes/HeroCentered.astro";
+import HeroSplitWithImage from "../components/heroes/HeroSplitWithImage.astro";
+import HeroDarkBold from "../components/heroes/HeroDarkBold.astro";
 import { reader } from "../lib/keystatic";
 
 const home = await reader.singletons.homepage.read();
@@ -12,8 +16,11 @@ const heroHeadline = home?.heroHeadline || "A simple, fast site you actually own
 const heroSubhead = home?.heroSubhead || "";
 const heroCtaText = home?.heroCtaText || "Read more";
 const heroCtaUrl = home?.heroCtaUrl || "/blog";
+const heroImage = home?.heroImage || null;
 const featuredTitle = home?.featuredSectionTitle || "What I do";
 const featuredText = home?.featuredSectionText || "";
+
+const heroVariant = settings?.design?.homepageHeroVariant || "left-aligned";
 
 const services = (await getCollection("services")).sort((a, b) => a.data.order - b.data.order);
 const featuredTestimonials = (await getCollection("testimonials")).filter((t) => t.data.featured);
@@ -23,33 +30,44 @@ const description = settings?.description;
 ---
 
 <Layout title={title} description={description}>
-  <section class="relative overflow-hidden border-b border-border">
-    <div class="relative mx-auto max-w-5xl px-6 py-20 sm:py-24 lg:px-8 lg:py-28 text-center">
-      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">{heroOverline}</p>
-      <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-tight">
-        {heroHeadline}
-      </h1>
-      {heroSubhead && (
-        <p class="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto whitespace-pre-line">{heroSubhead}</p>
-      )}
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a
-          href={heroCtaUrl}
-          class="inline-flex items-center justify-center bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors w-full sm:w-auto"
-          style="border-radius: var(--radius-md)"
-        >
-          {heroCtaText}
-        </a>
-        <a
-          href="/contact"
-          class="inline-flex items-center justify-center border border-border px-6 py-3 text-base font-semibold text-foreground hover:border-primary transition-colors w-full sm:w-auto"
-          style="border-radius: var(--radius-md)"
-        >
-          Get in touch
-        </a>
-      </div>
-    </div>
-  </section>
+  {heroVariant === "centered" && (
+    <HeroCentered
+      overline={heroOverline}
+      headline={heroHeadline}
+      subhead={heroSubhead}
+      ctaText={heroCtaText}
+      ctaUrl={heroCtaUrl}
+    />
+  )}
+  {heroVariant === "split-with-image" && (
+    <HeroSplitWithImage
+      overline={heroOverline}
+      headline={heroHeadline}
+      subhead={heroSubhead}
+      ctaText={heroCtaText}
+      ctaUrl={heroCtaUrl}
+      heroImage={heroImage}
+      imageAlt={heroHeadline}
+    />
+  )}
+  {heroVariant === "dark-bold" && (
+    <HeroDarkBold
+      overline={heroOverline}
+      headline={heroHeadline}
+      subhead={heroSubhead}
+      ctaText={heroCtaText}
+      ctaUrl={heroCtaUrl}
+    />
+  )}
+  {(heroVariant !== "centered" && heroVariant !== "split-with-image" && heroVariant !== "dark-bold") && (
+    <HeroLeftAligned
+      overline={heroOverline}
+      headline={heroHeadline}
+      subhead={heroSubhead}
+      ctaText={heroCtaText}
+      ctaUrl={heroCtaUrl}
+    />
+  )}
 
   {services.length > 0 && (
     <section class="py-16 sm:py-20">

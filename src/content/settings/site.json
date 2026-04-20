@@ -7,5 +7,18 @@
     { "label": "LinkedIn", "url": "https://linkedin.com/in/yourhandle" },
     { "label": "Twitter", "url": "https://twitter.com/yourhandle" }
   ],
-  "footerText": "Your Company."
+  "footerText": "Your Company.",
+  "design": {
+    "themePreset": "startup",
+    "primaryColor": "",
+    "primaryHoverColor": "",
+    "accentColor": "",
+    "fontBody": "",
+    "fontDisplay": "",
+    "googleFontsHref": "",
+    "radius": "2",
+    "headerVariant": "minimal",
+    "footerVariant": "simple",
+    "homepageHeroVariant": "left-aligned"
+  }
 }

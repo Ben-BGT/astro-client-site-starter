@@ -1,6 +1,6 @@
 # astro-client-site-starter
 
-A client-ready Astro site with a built-in CMS, so a business owner can edit their own website without touching code.
+A client-ready Astro site with a built-in CMS, so a business owner can edit their own website without touching code. Copy, colors, fonts, corner radius, and whole layout variants (Header, Footer, Hero) are all editable from `/keystatic`.
 
 ## Live demo
 
@@ -38,11 +38,26 @@ That's the full loop. Clone, run, edit, see it change. From here, customise the 
 
 ## What you can edit
 
-The starter is customisable on three levels.
+The starter is customisable on four levels, all reachable from `/keystatic` without touching code.
 
-### Theme presets (one-line rebrand)
+### Design (from /keystatic)
 
-Five built-in theme presets ship out of the box. Swap the active theme by changing a single import in `src/layouts/Layout.astro`.
+Open `/keystatic` → Site settings → **Design** to change:
+
+- **Theme preset** — Editorial, Startup, Agency, Boutique, Brutalist, or Custom.
+- **Primary / Primary hover / Accent color** — hex overrides that win over the preset.
+- **Body and display font stacks** — CSS font-family values.
+- **Google Fonts URL** — paste the import URL straight from fonts.google.com.
+- **Corner radius** — Sharp (0), Near-sharp (2), Subtle (4), Soft (8).
+- **Header variant** — Minimal, Centered, Split.
+- **Footer variant** — Simple, Columns, Minimal.
+- **Homepage hero variant** — Left-aligned, Centered, Split with image, Dark bold.
+
+Save, refresh the public tab. The entire site rebrands.
+
+### Theme presets
+
+Five opinionated starting points ship out of the box:
 
 | Preset | Feel |
 |--------|------|
@@ -78,7 +93,7 @@ Open `/keystatic` in the browser and the editor groups everything into two secti
 
 | Route | Content source | Intended use |
 |-------|----------------|--------------|
-| `/` | Singleton `homepage` + collections `services` and featured `testimonials` | Homepage |
+| `/` | Singleton `homepage` + collections `services` and featured `testimonials`. Hero comes in 4 variants (Left-aligned, Centered, Split with image, Dark bold). | Homepage |
 | `/services` | Collection `services` (sorted by `order`) | Services index |
 | `/services/[slug]` | Collection `services` (one entry) | Service detail page |
 | `/team` | Collection `team` | Who's behind the business |
@@ -90,6 +105,8 @@ Open `/keystatic` in the browser and the editor groups everything into two secti
 | `/contact` | Singleton `siteSettings.contactEmail` | Contact page |
 | `/404` | Static | Not-found page |
 | `/rss.xml` | Collection `posts` | RSS feed |
+
+Plus 3 Header variants (Minimal, Centered, Split) and 3 Footer variants (Simple, Columns, Minimal), all pick-able from Keystatic → Site settings → Design.
 
 ## Customising for a client
 
@@ -139,7 +156,7 @@ Common patterns: a flat build fee, plus an optional monthly retainer for hosting
 No. The site deploys as static-first with a small Node adapter for Keystatic. Vercel, Netlify, and Cloudflare Pages all run it on their free or cheap tiers.
 
 **How do I rebrand?**
-Swap the theme preset by changing one import line in `src/layouts/Layout.astro`. Five presets ship with the starter (editorial, startup, agency, boutique, brutalist). For finer control, override individual CSS custom property tokens in `src/styles/global.css` or a custom theme file. Full walkthrough in [CUSTOMIZING.md](CUSTOMIZING.md).
+Open `/keystatic` → Site settings → Design. Pick a preset, override colors and fonts, switch Header / Footer / Hero variants. Save. Five presets ship with the starter (editorial, startup, agency, boutique, brutalist). Full walkthrough in [CUSTOMIZING.md](CUSTOMIZING.md).
 
 ## Credits
 
