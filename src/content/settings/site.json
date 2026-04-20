@@ -18,7 +18,6 @@
     "googleFontsHref": "",
     "radius": "2",
     "headerVariant": "minimal",
-    "footerVariant": "simple",
-    "homepageHeroVariant": "left-aligned"
+    "footerVariant": "simple"
   }
 }

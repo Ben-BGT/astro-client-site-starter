@@ -50,7 +50,7 @@ if (primaryHoverColor) overrideLines.push(`--color-primary-hover: ${primaryHover
 if (accentColor) overrideLines.push(`--color-accent: ${accentColor};`);
 if (fontBody) overrideLines.push(`--font-body: ${fontBody};`);
 if (fontDisplay) overrideLines.push(`--font-display: ${fontDisplay};`);
-if (radius !== undefined && radius !== null && radius !== "") {
+if (radius !== undefined && radius !== null && String(radius).length > 0) {
   overrideLines.push(`--radius-sm: ${radius}px;`);
   overrideLines.push(`--radius-md: ${radius}px;`);
   overrideLines.push(`--radius-lg: ${radius}px;`);

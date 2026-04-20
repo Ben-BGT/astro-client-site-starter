@@ -1,0 +1,56 @@
+---
+/*
+  Stats block. Big value, small label. `tabular-nums` keeps numeric
+  values aligned across rows. Three or four items look best.
+*/
+interface Item {
+  value?: string;
+  label?: string;
+}
+
+interface Props {
+  title?: string;
+  items?: Item[];
+}
+
+const { title, items = [] } = Astro.props;
+
+const count = items.length;
+const gridClass =
+  count >= 4
+    ? "sm:grid-cols-2 lg:grid-cols-4"
+    : count === 3
+    ? "sm:grid-cols-3"
+    : count === 2
+    ? "sm:grid-cols-2"
+    : "sm:grid-cols-1";
+---
+
+<section class="py-16 sm:py-20 border-t border-border">
+  <div class="mx-auto max-w-6xl px-6 lg:px-8">
+    {title && (
+      <h2 class="text-center text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+        {title}
+      </h2>
+    )}
+    {items.length > 0 && (
+      <dl class={`mt-10 grid grid-cols-1 gap-8 ${gridClass}`}>
+        {items.map((item) => (
+          <div
+            class="bg-background border-l-2 border-primary pl-5 py-3"
+          >
+            <dt class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {item.label}
+            </dt>
+            <dd
+              class="mt-2 text-4xl font-semibold text-foreground sm:text-5xl"
+              style="font-variant-numeric: tabular-nums;"
+            >
+              {item.value}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    )}
+  </div>
+</section>

@@ -20,8 +20,9 @@ From v0.3.0 onwards, the client can change colors, fonts, radius, and pick Heade
    - **Corner radius** — Sharp (0px), Near-sharp (2px), Subtle (4px), Soft (8px).
    - **Header variant** — Minimal, Centered, Split.
    - **Footer variant** — Simple, Columns, Minimal.
-   - **Homepage hero variant** — Left-aligned, Centered, Split with image, Dark bold.
 5. Hit **Save**. The browser tab running `npm run dev` refreshes and the site is rebranded.
+
+Hero style is picked per-page on each Hero block, not at the site level. That means one page can run a dark-bold hero while another uses the left-aligned default, without code changes.
 
 ### How the overrides and presets interact
 
@@ -132,9 +133,47 @@ When `fontsHref` is set, the Layout emits the standard preconnect + stylesheet t
 
 Whichever you pick, make sure your active theme's `--font-body` and `--font-display` put the new font first in the stack.
 
+## Building pages with blocks
+
+From v0.4.0 onwards, the homepage, about page, and every landing page are built from a reusable block library. The flow is the same everywhere:
+
+1. Open `/keystatic` and pick the page you want to edit (Homepage, About page, or an entry under Landing pages).
+2. Click **Add block** at the bottom of the Page blocks array.
+3. Pick a block type from the dropdown (Hero, Feature grid, Testimonial wall, CTA band, FAQ, Stats, Pricing tiers, Logo cloud, Content block, or CTA split).
+4. Fill in the fields. Text fields accept plain text, multiline text supports line breaks and blank-line paragraph breaks.
+5. Drag blocks in the sidebar to reorder them.
+6. Hit **Save**. Refresh the public tab.
+
+Landing pages live under `/landing/<slug>`. Each entry has a `showChrome` checkbox — turn it off for pure conversion pages with no header or footer, which is handy for paid-ads traffic.
+
+### Block library quick reference
+
+| Block | Best for |
+|-------|----------|
+| `hero` | Top-of-page statement. Four variants: Left-aligned, Centered, Split with image, Dark bold. |
+| `feature-grid` | Services, features, or steps. 3 or 4 columns. |
+| `testimonial-wall` | Social proof. Reads the testimonials collection. |
+| `cta-band` | Full-width call-to-action band. Light or dark. |
+| `faq` | Native accordion, no JS. |
+| `stats` | Big numbers, tabular aligned. |
+| `pricing-tiers` | Multi-tier pricing, one featured. |
+| `logo-cloud` | Client logos, grayscale hover. |
+| `content-block` | Long-form paragraphs (intros, legal copy). |
+| `cta-split` | Image on one side, CTA on the other. |
+
+### Adding a new block type
+
+Three steps:
+
+1. **Schema** — add a discriminant value + object schema to the `pageBlocks()` helper in `keystatic.config.ts`.
+2. **Component** — create `src/components/blocks/YourBlock.astro`. Accept the fields as props, render HTML using the site's design tokens (`var(--color-primary)` etc).
+3. **Dispatcher** — add a case to `src/components/BlockRenderer.astro`.
+
+The existing blocks are good templates.
+
 ## Header, Footer, and Hero variants
 
-Three Header variants, three Footer variants, four homepage Hero variants. All pick-able from Keystatic → Site settings → Design.
+Three Header variants, three Footer variants. Header / Footer are site-level choices (Keystatic → Site settings → Design). Hero is a block-level choice, picked each time you drop a Hero block on a page.
 
 ### Header variants (`src/components/headers/`)
 
@@ -152,13 +191,15 @@ Three Header variants, three Footer variants, four homepage Hero variants. All p
 | `columns` | Three columns: About, Links, Connect. Good for content-heavy sites. |
 | `minimal` | Just copyright on one line. Good for portfolios and landing pages. |
 
-### Homepage hero variants (`src/components/heroes/`)
+### Hero variants (`src/components/heroes/`)
+
+Picked inside each Hero block on a page.
 
 | Variant | When to use |
 |---------|------------|
 | `left-aligned` | Default. Text left, CTAs below. Practical, works everywhere. |
 | `centered` | Text centered and stacked. Calmer, balanced, good for landing pages. |
-| `split-with-image` | Text left, photo/illustration right. Good for products and personal brands. Set the **Hero image** field on the Homepage singleton. Falls back to a subtle placeholder if blank. |
+| `split-with-image` | Text left, photo/illustration right. Set the block's image field, falls back to a subtle placeholder. |
 | `dark-bold` | Inverted background, oversize type, accent eyebrow. Statement hero for agencies and studios. |
 
 All variants inherit the active theme tokens. Switching the corner-radius selector, for example, updates every variant's cards and buttons without touching a component file.
@@ -170,7 +211,7 @@ The site's chrome lives in two dispatcher components that read `siteSettings.des
 - `src/components/Header.astro` — picks from `headers/HeaderMinimal.astro`, `headers/HeaderCentered.astro`, or `headers/HeaderSplit.astro`.
 - `src/components/Footer.astro` — picks from `footers/FooterSimple.astro`, `footers/FooterColumns.astro`, or `footers/FooterMinimal.astro`.
 
-`src/pages/index.astro` does the same for the homepage hero, picking from the four files in `src/components/heroes/`.
+Page content runs through `src/components/BlockRenderer.astro`, which dispatches each block to the matching component under `src/components/blocks/`. The homepage (`src/pages/index.astro`), about page (`src/pages/about.astro`), and dynamic landing route (`src/pages/landing/[slug].astro`) all iterate over a `blocks` array and render each one.
 
 `src/layouts/Layout.astro` is the wrapper every page uses. That's where the theme preset stylesheet, CMS overrides, Google Fonts, `<head>`, and body structure live. Edit it when you need to add global scripts or meta tags.
 

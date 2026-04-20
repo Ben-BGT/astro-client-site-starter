@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import BlockRenderer from "../../components/BlockRenderer.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("landingPages");
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as { entry: any };
+const data = entry?.data ?? {};
+const blocks = data.blocks ?? [];
+const showChrome = data.showChrome !== false;
+const title = data.title ?? "Landing";
+const description = data.description;
+---
+
+<Layout title={title} description={description} hideChrome={!showChrome}>
+  {blocks.map((block: any) => <BlockRenderer block={block} />)}
+</Layout>

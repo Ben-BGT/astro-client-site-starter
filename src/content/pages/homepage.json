@@ -1,10 +1,72 @@
 {
-  "heroOverline": "Welcome",
-  "heroHeadline": "A simple, fast site you actually own.",
-  "heroSubhead": "Write posts in the browser. Commits land in git. Deploy for a few dollars a month. Swap the copy, pick your colours, and you're live.",
-  "heroCtaText": "See our services",
-  "heroCtaUrl": "/services",
-  "heroImage": null,
-  "featuredSectionTitle": "What I do",
-  "featuredSectionText": "A short line that introduces the services grid below. Edit this in /keystatic under Homepage."
+  "blocks": [
+    {
+      "discriminant": "hero",
+      "value": {
+        "variant": "left-aligned",
+        "overline": "Welcome",
+        "headline": "A simple, fast site you actually own.",
+        "subhead": "Write posts in the browser. Commits land in git. Deploy for a few dollars a month. Swap the copy, pick your colours, and you're live.",
+        "ctaText": "See the services",
+        "ctaUrl": "/services",
+        "image": null
+      }
+    },
+    {
+      "discriminant": "feature-grid",
+      "value": {
+        "title": "What I do",
+        "intro": "Three services, priced fixed, delivered in weeks, not months.",
+        "columns": "3",
+        "items": [
+          {
+            "icon": "01",
+            "title": "Brand strategy",
+            "body": "Positioning, messaging, and voice so the site sounds like a single person, not a marketing department."
+          },
+          {
+            "icon": "02",
+            "title": "Web design",
+            "body": "Fast, editable sites built on a modern stack. No database, no monthly CMS fee, no lock-in."
+          },
+          {
+            "icon": "03",
+            "title": "Content marketing",
+            "body": "A steady stream of useful content that earns trust and brings the right people to the site."
+          }
+        ]
+      }
+    },
+    {
+      "discriminant": "stats",
+      "value": {
+        "title": "Built for clarity",
+        "items": [
+          { "value": "2 wks", "label": "Average build time" },
+          { "value": "100%", "label": "Content ownership" },
+          { "value": "$0", "label": "Monthly CMS fee" },
+          { "value": "<1s", "label": "First paint" }
+        ]
+      }
+    },
+    {
+      "discriminant": "testimonial-wall",
+      "value": {
+        "title": "Words from the people I've worked with",
+        "intro": "A few quotes from the projects I'm proudest of.",
+        "source": "featured",
+        "limit": 6
+      }
+    },
+    {
+      "discriminant": "cta-band",
+      "value": {
+        "headline": "Ready to get started?",
+        "subhead": "A 20 minute call is the fastest way to find out if I'm a fit for your next project.",
+        "ctaText": "Book a call",
+        "ctaUrl": "/contact",
+        "tone": "light"
+      }
+    }
+  ]
 }

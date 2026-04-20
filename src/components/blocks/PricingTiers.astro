@@ -1,0 +1,107 @@
+---
+/*
+  Pricing tiers block. Mirrors the static /pricing page visually, but
+  every tier is typed into the CMS. Set `featured: true` on one tier to
+  highlight it with the primary border treatment.
+*/
+import SectionHeading from "../SectionHeading.astro";
+
+interface Tier {
+  name?: string;
+  price?: string;
+  period?: string;
+  description?: string;
+  featured?: boolean;
+  ctaText?: string;
+  ctaUrl?: string;
+  features?: string[];
+}
+
+interface Props {
+  title?: string;
+  intro?: string;
+  tiers?: Tier[];
+}
+
+const { title = "Pricing", intro, tiers = [] } = Astro.props;
+---
+
+<section class="py-16 sm:py-20 border-t border-border">
+  <div class="mx-auto max-w-6xl px-6 lg:px-8">
+    {(title || intro) && (
+      <SectionHeading
+        overline="Pricing"
+        title={title}
+        description={intro || ""}
+        align="center"
+      />
+    )}
+    {tiers.length > 0 && (
+      <div
+        class={`mt-12 grid gap-6 ${
+          tiers.length >= 3 ? "md:grid-cols-3" : "md:grid-cols-2"
+        }`}
+      >
+        {tiers.map((tier) => (
+          <div
+            class={`bg-background border p-8 flex flex-col ${
+              tier.featured ? "border-primary" : "border-border"
+            }`}
+            style="border-radius: var(--radius-md)"
+          >
+            {tier.featured && (
+              <p
+                class="inline-block self-start bg-primary px-2 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground mb-4"
+                style="border-radius: var(--radius-md)"
+              >
+                Most popular
+              </p>
+            )}
+            {tier.name && (
+              <h3 class="text-xl font-semibold text-foreground">{tier.name}</h3>
+            )}
+            {tier.description && (
+              <p class="mt-2 text-sm text-muted-foreground">{tier.description}</p>
+            )}
+            {tier.price && (
+              <div class="mt-6 flex items-baseline gap-2">
+                <span
+                  class="text-4xl font-semibold text-foreground"
+                  style="font-variant-numeric: tabular-nums;"
+                >
+                  {tier.price}
+                </span>
+                {tier.period && (
+                  <span class="text-sm text-muted-foreground">{tier.period}</span>
+                )}
+              </div>
+            )}
+            {tier.features && tier.features.length > 0 && (
+              <ul class="mt-6 space-y-3 flex-1">
+                {tier.features.map((f) => (
+                  <li class="flex items-start gap-2 text-sm text-foreground">
+                    <span class="text-primary font-semibold">✓</span>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {tier.ctaText && tier.ctaUrl && (
+              <a
+                href={tier.ctaUrl}
+                class={`mt-8 inline-flex items-center justify-center px-6 py-3 text-sm font-semibold transition-colors ${
+                  tier.featured
+                    ? "bg-primary text-primary-foreground hover:bg-primary-hover"
+                    : "border border-border text-foreground hover:border-primary"
+                }`}
+                style="border-radius: var(--radius-md)"
+              >
+                {tier.ctaText}
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</section>

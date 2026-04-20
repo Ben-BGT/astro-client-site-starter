@@ -1,5 +1,5 @@
 import { defineCollection, z } from "astro:content";
-import { glob, file } from "astro/loaders";
+import { glob } from "astro/loaders";
 
 const posts = defineCollection({
   loader: glob({ pattern: "**/*.mdoc", base: "./src/content/posts" }),
@@ -70,15 +70,31 @@ const caseStudies = defineCollection({
   }),
 });
 
-// `pages` backs Keystatic singletons that have a markdoc body (currently just
-// aboutPage). Singletons without a body (homepage, siteSettings) are read via
-// the Keystatic reader, not this collection.
-const pages = defineCollection({
-  loader: glob({ pattern: "**/*.mdoc", base: "./src/content/pages" }),
+// Page blocks are unvalidated here: Keystatic owns the schema, and the
+// BlockRenderer dispatches on `discriminant`. Anything Keystatic saves is
+// rendered; missing or unknown kinds are simply skipped.
+const blockSchema = z.array(
+  z.object({
+    discriminant: z.string(),
+    value: z.record(z.string(), z.any()).default({}),
+  })
+);
+
+const landingPages = defineCollection({
+  loader: glob({ pattern: "**/*.json", base: "./src/content/landingPages" }),
   schema: z.object({
     title: z.string(),
-    tagline: z.string().optional(),
+    description: z.string().optional(),
+    showChrome: z.boolean().default(true),
+    blocks: blockSchema.default([]),
   }),
 });
 
-export const collections = { posts, services, team, testimonials, caseStudies, pages };
+export const collections = {
+  posts,
+  services,
+  team,
+  testimonials,
+  caseStudies,
+  landingPages,
+};

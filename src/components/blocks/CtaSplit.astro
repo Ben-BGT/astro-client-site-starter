@@ -1,0 +1,78 @@
+---
+/*
+  Split CTA. Image on one side, headline + subhead + button on the other.
+  `imageSide` picks left or right. On mobile the image always stacks
+  above the text.
+*/
+interface Props {
+  image?: string | null;
+  headline?: string;
+  subhead?: string;
+  ctaText?: string;
+  ctaUrl?: string;
+  imageSide?: "left" | "right";
+}
+
+const {
+  image,
+  headline,
+  subhead,
+  ctaText,
+  ctaUrl,
+  imageSide = "left",
+} = Astro.props;
+
+const imageOrder = imageSide === "right" ? "lg:order-2" : "lg:order-1";
+const textOrder = imageSide === "right" ? "lg:order-1" : "lg:order-2";
+---
+
+<section class="py-16 sm:py-20 border-t border-border">
+  <div class="mx-auto max-w-6xl px-6 lg:px-8">
+    <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
+      <div class={`order-1 ${imageOrder}`}>
+        {image ? (
+          <img
+            src={image}
+            alt={headline || ""}
+            class="w-full h-auto object-cover border border-border"
+            style="border-radius: var(--radius-md)"
+          />
+        ) : (
+          <div
+            class="w-full aspect-[4/3] bg-muted border border-border flex items-center justify-center"
+            style="border-radius: var(--radius-md)"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+              <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+              <circle cx="9" cy="9" r="2"/>
+              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+            </svg>
+          </div>
+        )}
+      </div>
+      <div class={`order-2 ${textOrder}`}>
+        {headline && (
+          <h2 class="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            {headline}
+          </h2>
+        )}
+        {subhead && (
+          <p class="mt-4 text-lg text-muted-foreground leading-relaxed whitespace-pre-line">
+            {subhead}
+          </p>
+        )}
+        {ctaText && ctaUrl && (
+          <div class="mt-8">
+            <a
+              href={ctaUrl}
+              class="inline-flex items-center justify-center bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
+              style="border-radius: var(--radius-md)"
+            >
+              {ctaText}
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</section>

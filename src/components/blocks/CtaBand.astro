@@ -1,0 +1,71 @@
+---
+/*
+  CTA band. Full-bleed section with headline, optional subhead, and one
+  button. Tone toggles between light (default background) and dark (inverted
+  using foreground/background tokens, so it still follows the theme).
+*/
+interface Props {
+  headline?: string;
+  subhead?: string;
+  ctaText?: string;
+  ctaUrl?: string;
+  tone?: "light" | "dark";
+}
+
+const {
+  headline = "",
+  subhead,
+  ctaText = "Book a call",
+  ctaUrl = "/contact",
+  tone = "light",
+} = Astro.props;
+
+const sectionStyle =
+  tone === "dark"
+    ? "background: var(--color-foreground); color: var(--color-background);"
+    : "";
+const subheadStyle =
+  tone === "dark" ? "color: var(--color-background); opacity: 0.75;" : "";
+const buttonStyle =
+  tone === "dark"
+    ? "background: var(--color-background); color: var(--color-foreground); border-radius: var(--radius-md);"
+    : "border-radius: var(--radius-md);";
+const sectionClass =
+  tone === "dark"
+    ? "py-16 sm:py-20 border-t border-border"
+    : "py-16 sm:py-20 border-t border-border";
+---
+
+<section class={sectionClass} style={sectionStyle}>
+  <div class="mx-auto max-w-3xl px-6 lg:px-8 text-center">
+    <h2
+      class="text-3xl font-semibold tracking-tight sm:text-4xl"
+      style={tone === "dark" ? "color: var(--color-background);" : ""}
+    >
+      {headline}
+    </h2>
+    {subhead && (
+      <p
+        class="mt-4 text-lg text-muted-foreground"
+        style={subheadStyle}
+      >
+        {subhead}
+      </p>
+    )}
+    {ctaText && ctaUrl && (
+      <div class="mt-8">
+        <a
+          href={ctaUrl}
+          class={
+            tone === "dark"
+              ? "inline-flex items-center justify-center px-6 py-3 text-base font-semibold transition-opacity hover:opacity-85"
+              : "inline-flex items-center justify-center bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
+          }
+          style={buttonStyle}
+        >
+          {ctaText}
+        </a>
+      </div>
+    )}
+  </div>
+</section>

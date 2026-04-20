@@ -1,5 +1,273 @@
 import { config, fields, collection, singleton } from '@keystatic/core';
 
+/*
+  Shared block library. Every page-level singleton or collection that supports
+  block-based editing uses `pageBlocks()` so the block schema stays identical
+  across homepage, about page, and landing pages.
+*/
+const heroBlock = fields.object({
+  variant: fields.select({
+    label: 'Hero variant',
+    description:
+      'Left-aligned: default workhorse. Centered: balanced, good for landing pages. Split with image: text left, photo right. Dark bold: inverted statement hero.',
+    options: [
+      { label: 'Left-aligned', value: 'left-aligned' },
+      { label: 'Centered', value: 'centered' },
+      { label: 'Split with image', value: 'split-with-image' },
+      { label: 'Dark bold', value: 'dark-bold' },
+    ],
+    defaultValue: 'left-aligned',
+  }),
+  overline: fields.text({ label: 'Overline', defaultValue: 'Welcome' }),
+  headline: fields.text({
+    label: 'Headline',
+    defaultValue: 'A simple, fast site you actually own.',
+  }),
+  subhead: fields.text({
+    label: 'Subhead',
+    multiline: true,
+    defaultValue: '',
+  }),
+  ctaText: fields.text({ label: 'CTA text', defaultValue: '' }),
+  ctaUrl: fields.text({ label: 'CTA URL', defaultValue: '' }),
+  image: fields.image({
+    label: 'Image',
+    description:
+      'Only shown by the "Split with image" variant. Ignored otherwise.',
+    directory: 'public/images/blocks',
+    publicPath: '/images/blocks/',
+  }),
+});
+
+const featureGridBlock = fields.object({
+  title: fields.text({ label: 'Title', defaultValue: '' }),
+  intro: fields.text({ label: 'Intro', multiline: true, defaultValue: '' }),
+  columns: fields.select({
+    label: 'Columns',
+    options: [
+      { label: 'Three', value: '3' },
+      { label: 'Four', value: '4' },
+    ],
+    defaultValue: '3',
+  }),
+  items: fields.array(
+    fields.object({
+      icon: fields.text({
+        label: 'Icon',
+        description: 'An emoji or short label (e.g. "01", "Brand").',
+      }),
+      title: fields.text({ label: 'Title' }),
+      body: fields.text({ label: 'Body', multiline: true }),
+    }),
+    {
+      label: 'Items',
+      itemLabel: (props) => props.fields.title.value || 'Feature',
+    }
+  ),
+});
+
+const testimonialWallBlock = fields.object({
+  title: fields.text({ label: 'Title', defaultValue: 'What clients say' }),
+  intro: fields.text({ label: 'Intro', multiline: true, defaultValue: '' }),
+  source: fields.select({
+    label: 'Source',
+    description:
+      'Featured: only testimonials with the "featured" flag. All: everything in the testimonials collection.',
+    options: [
+      { label: 'Featured testimonials only', value: 'featured' },
+      { label: 'All testimonials', value: 'all' },
+    ],
+    defaultValue: 'featured',
+  }),
+  limit: fields.integer({
+    label: 'Limit',
+    description: 'Maximum testimonials to show. Leave blank for no limit.',
+    defaultValue: 6,
+  }),
+});
+
+const ctaBandBlock = fields.object({
+  headline: fields.text({
+    label: 'Headline',
+    defaultValue: 'Ready to get started?',
+  }),
+  subhead: fields.text({ label: 'Subhead', multiline: true, defaultValue: '' }),
+  ctaText: fields.text({ label: 'CTA text', defaultValue: 'Book a call' }),
+  ctaUrl: fields.text({ label: 'CTA URL', defaultValue: '/contact' }),
+  tone: fields.select({
+    label: 'Tone',
+    options: [
+      { label: 'Light', value: 'light' },
+      { label: 'Dark', value: 'dark' },
+    ],
+    defaultValue: 'light',
+  }),
+});
+
+const faqBlock = fields.object({
+  title: fields.text({ label: 'Title', defaultValue: 'Questions' }),
+  intro: fields.text({ label: 'Intro', multiline: true, defaultValue: '' }),
+  items: fields.array(
+    fields.object({
+      question: fields.text({ label: 'Question' }),
+      answer: fields.text({ label: 'Answer', multiline: true }),
+    }),
+    {
+      label: 'Items',
+      itemLabel: (props) => props.fields.question.value || 'FAQ item',
+    }
+  ),
+});
+
+const statsBlock = fields.object({
+  title: fields.text({ label: 'Title', defaultValue: '' }),
+  items: fields.array(
+    fields.object({
+      value: fields.text({
+        label: 'Value',
+        description: 'e.g. "98%", "10K+", "$2.4M"',
+      }),
+      label: fields.text({ label: 'Label' }),
+    }),
+    {
+      label: 'Items',
+      itemLabel: (props) =>
+        `${props.fields.value.value || ''} ${props.fields.label.value || ''}`.trim() || 'Stat',
+    }
+  ),
+});
+
+const pricingTiersBlock = fields.object({
+  title: fields.text({ label: 'Title', defaultValue: 'Pricing' }),
+  intro: fields.text({ label: 'Intro', multiline: true, defaultValue: '' }),
+  tiers: fields.array(
+    fields.object({
+      name: fields.text({ label: 'Name' }),
+      price: fields.text({
+        label: 'Price',
+        description: 'e.g. "$2,500", "Custom"',
+      }),
+      period: fields.text({
+        label: 'Period',
+        description: 'e.g. "one-off", "per month". Leave blank if none.',
+        defaultValue: '',
+      }),
+      description: fields.text({
+        label: 'Description',
+        multiline: true,
+        defaultValue: '',
+      }),
+      featured: fields.checkbox({
+        label: 'Featured',
+        description: 'Highlight this tier.',
+        defaultValue: false,
+      }),
+      ctaText: fields.text({ label: 'CTA text', defaultValue: 'Get started' }),
+      ctaUrl: fields.text({ label: 'CTA URL', defaultValue: '/contact' }),
+      features: fields.array(fields.text({ label: 'Feature' }), {
+        label: 'Features',
+        itemLabel: (props) => props.value || 'Feature',
+      }),
+    }),
+    {
+      label: 'Tiers',
+      itemLabel: (props) => props.fields.name.value || 'Tier',
+    }
+  ),
+});
+
+const logoCloudBlock = fields.object({
+  title: fields.text({ label: 'Title', defaultValue: '' }),
+  logos: fields.array(
+    fields.object({
+      name: fields.text({ label: 'Name' }),
+      image: fields.image({
+        label: 'Image',
+        directory: 'public/images/logos',
+        publicPath: '/images/logos/',
+      }),
+    }),
+    {
+      label: 'Logos',
+      itemLabel: (props) => props.fields.name.value || 'Logo',
+    }
+  ),
+});
+
+/*
+  The markdoc field is not allowed inside a conditional discriminant, so the
+  content block stores its body as a multiline text field. BlockRenderer splits
+  paragraphs on blank lines so basic long-form copy still reads as expected.
+*/
+const contentBlockBlock = fields.object({
+  body: fields.text({
+    label: 'Body',
+    description:
+      'Long-form text. Separate paragraphs with a blank line. Renders inside a narrow, readable column.',
+    multiline: true,
+    defaultValue: '',
+  }),
+});
+
+const ctaSplitBlock = fields.object({
+  image: fields.image({
+    label: 'Image',
+    directory: 'public/images/blocks',
+    publicPath: '/images/blocks/',
+  }),
+  headline: fields.text({ label: 'Headline', defaultValue: '' }),
+  subhead: fields.text({ label: 'Subhead', multiline: true, defaultValue: '' }),
+  ctaText: fields.text({ label: 'CTA text', defaultValue: '' }),
+  ctaUrl: fields.text({ label: 'CTA URL', defaultValue: '' }),
+  imageSide: fields.select({
+    label: 'Image side',
+    options: [
+      { label: 'Left', value: 'left' },
+      { label: 'Right', value: 'right' },
+    ],
+    defaultValue: 'left',
+  }),
+});
+
+function pageBlocks(label: string) {
+  return fields.array(
+    fields.conditional(
+      fields.select({
+        label: 'Block type',
+        options: [
+          { label: 'Hero', value: 'hero' },
+          { label: 'Feature grid', value: 'feature-grid' },
+          { label: 'Testimonial wall', value: 'testimonial-wall' },
+          { label: 'CTA band', value: 'cta-band' },
+          { label: 'FAQ', value: 'faq' },
+          { label: 'Stats', value: 'stats' },
+          { label: 'Pricing tiers', value: 'pricing-tiers' },
+          { label: 'Logo cloud', value: 'logo-cloud' },
+          { label: 'Content block', value: 'content-block' },
+          { label: 'CTA split', value: 'cta-split' },
+        ],
+        defaultValue: 'hero',
+      }),
+      {
+        hero: heroBlock,
+        'feature-grid': featureGridBlock,
+        'testimonial-wall': testimonialWallBlock,
+        'cta-band': ctaBandBlock,
+        faq: faqBlock,
+        stats: statsBlock,
+        'pricing-tiers': pricingTiersBlock,
+        'logo-cloud': logoCloudBlock,
+        'content-block': contentBlockBlock,
+        'cta-split': ctaSplitBlock,
+      }
+    ),
+    {
+      label,
+      itemLabel: (props) => props.fields.discriminant.value,
+    }
+  );
+}
+
 export default config({
   storage: {
     // Local storage: writes straight to the filesystem while running locally.
@@ -12,7 +280,16 @@ export default config({
   ui: {
     brand: { name: 'Site CMS' },
     navigation: {
-      'Site content': ['homepage', 'aboutPage', 'services', 'team', 'testimonials', 'caseStudies', 'posts'],
+      'Site content': [
+        'homepage',
+        'aboutPage',
+        'landingPages',
+        'services',
+        'team',
+        'testimonials',
+        'caseStudies',
+        'posts',
+      ],
       'Configuration': ['siteSettings'],
     },
   },
@@ -125,23 +402,11 @@ export default config({
               ],
               defaultValue: 'simple',
             }),
-            homepageHeroVariant: fields.select({
-              label: 'Homepage hero variant',
-              description:
-                'Left-aligned: current default. Centered: stacked & centered. Split with image: text left, photo right. Dark bold: editorial statement hero.',
-              options: [
-                { label: 'Left-aligned (default)', value: 'left-aligned' },
-                { label: 'Centered', value: 'centered' },
-                { label: 'Split with image', value: 'split-with-image' },
-                { label: 'Dark bold', value: 'dark-bold' },
-              ],
-              defaultValue: 'left-aligned',
-            }),
           },
           {
             label: 'Design',
             description:
-              'Colors, fonts, radius, and Header/Footer/Hero variants. Pick a preset for a starting point, then fine-tune.',
+              'Colors, fonts, radius, and Header/Footer variants. Pick a preset for a starting point, then fine-tune. Hero style is now a block-level choice on each page.',
           }
         ),
       },
@@ -151,60 +416,41 @@ export default config({
       path: 'src/content/pages/homepage',
       format: { data: 'json' },
       schema: {
-        heroOverline: fields.text({ label: 'Hero overline', defaultValue: 'Welcome' }),
-        heroHeadline: fields.text({
-          label: 'Hero headline',
-          defaultValue: 'A simple, fast site you actually own.',
-        }),
-        heroSubhead: fields.text({
-          label: 'Hero subhead',
-          multiline: true,
-          defaultValue:
-            "Write posts in the browser. Commits land in git. Deploy for a few dollars a month. Swap the copy, pick your colours, and you're live.",
-        }),
-        heroCtaText: fields.text({ label: 'Hero CTA text', defaultValue: 'Read the blog' }),
-        heroCtaUrl: fields.text({ label: 'Hero CTA URL', defaultValue: '/blog' }),
-        heroImage: fields.image({
-          label: 'Hero image (optional)',
-          description:
-            'Used by the "Split with image" hero variant. Ignored by other variants.',
-          directory: 'public/images/homepage',
-          publicPath: '/images/homepage/',
-        }),
-        featuredSectionTitle: fields.text({
-          label: 'Featured section title',
-          defaultValue: 'What I do',
-        }),
-        featuredSectionText: fields.text({
-          label: 'Featured section text',
-          multiline: true,
-          defaultValue: 'A short line that introduces the services grid below.',
-        }),
+        blocks: pageBlocks('Page blocks'),
       },
     }),
     aboutPage: singleton({
       label: 'About page',
       path: 'src/content/pages/about',
-      format: { contentField: 'content' },
+      format: { data: 'json' },
       schema: {
         title: fields.text({ label: 'Title', defaultValue: 'About' }),
-        tagline: fields.text({
-          label: 'Tagline',
-          defaultValue: 'A short line about who runs the business.',
-        }),
-        content: fields.markdoc({
-          label: 'Body',
-          options: {
-            image: {
-              directory: 'public/images/about',
-              publicPath: '/images/about/',
-            },
-          },
-        }),
+        blocks: pageBlocks('Page blocks'),
       },
     }),
   },
   collections: {
+    landingPages: collection({
+      label: 'Landing pages',
+      slugField: 'title',
+      path: 'src/content/landingPages/*',
+      format: { data: 'json' },
+      schema: {
+        title: fields.slug({ name: { label: 'Title' } }),
+        description: fields.text({
+          label: 'Meta description',
+          description: 'Used in the page <meta name="description"> tag.',
+          multiline: true,
+        }),
+        showChrome: fields.checkbox({
+          label: 'Show site header and footer',
+          description:
+            'Uncheck for a pure, chrome-free landing page (no nav, no footer). Handy for paid-ads landing pages.',
+          defaultValue: true,
+        }),
+        blocks: pageBlocks('Page blocks'),
+      },
+    }),
     posts: collection({
       label: 'Posts',
       slugField: 'title',

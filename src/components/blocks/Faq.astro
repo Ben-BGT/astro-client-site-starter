@@ -1,0 +1,65 @@
+---
+/*
+  FAQ block. Native <details>/<summary> accordion, no JS required.
+  Respects the house style: straight left accent border, tiny radius,
+  no gradients. Works with any number of items.
+*/
+import SectionHeading from "../SectionHeading.astro";
+
+interface Item {
+  question?: string;
+  answer?: string;
+}
+
+interface Props {
+  title?: string;
+  intro?: string;
+  items?: Item[];
+}
+
+const { title = "Questions", intro, items = [] } = Astro.props;
+---
+
+<section class="py-16 sm:py-20 border-t border-border">
+  <div class="mx-auto max-w-3xl px-6 lg:px-8">
+    {(title || intro) && (
+      <SectionHeading
+        overline="FAQ"
+        title={title}
+        description={intro || ""}
+        align="center"
+      />
+    )}
+    {items.length > 0 && (
+      <div class="mt-10 space-y-3">
+        {items.map((item) => (
+          <details
+            class="group bg-background border border-border"
+            style="border-radius: var(--radius-md); border-left-width: 3px; border-left-color: var(--color-primary);"
+          >
+            <summary class="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 text-base font-semibold text-foreground list-none">
+              <span>{item.question}</span>
+              <span
+                class="text-muted-foreground transition-transform group-open:rotate-45"
+                aria-hidden="true"
+              >
+                +
+              </span>
+            </summary>
+            {item.answer && (
+              <div class="px-5 pb-5 text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
+                {item.answer}
+              </div>
+            )}
+          </details>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

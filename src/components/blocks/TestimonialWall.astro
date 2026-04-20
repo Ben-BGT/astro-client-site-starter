@@ -1,0 +1,90 @@
+---
+/*
+  Testimonial wall block. Reads the testimonials collection, optionally
+  filters to `featured`, caps at `limit`, and renders as a responsive wall
+  of quote cards. Photos are optional, fallback is a small initials bubble.
+*/
+import { getCollection } from "astro:content";
+import SectionHeading from "../SectionHeading.astro";
+
+interface Props {
+  title?: string;
+  intro?: string;
+  source?: "featured" | "all";
+  limit?: number | null;
+}
+
+const { title = "What clients say", intro, source = "featured", limit = 6 } =
+  Astro.props;
+
+const all = await getCollection("testimonials");
+let list =
+  source === "featured" ? all.filter((t) => t.data.featured) : all;
+if (typeof limit === "number" && limit > 0) {
+  list = list.slice(0, limit);
+}
+
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .map((p) => p[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
+---
+
+{list.length > 0 && (
+  <section class="py-16 sm:py-20 bg-muted border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 lg:px-8">
+      {(title || intro) && (
+        <SectionHeading
+          overline="Testimonials"
+          title={title}
+          description={intro || ""}
+          align="center"
+        />
+      )}
+      <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {list.map((t) => (
+          <figure
+            class="bg-background border border-border p-6 flex flex-col"
+            style="border-radius: var(--radius-md)"
+          >
+            <blockquote class="text-base text-foreground leading-relaxed flex-1">
+              &ldquo;{t.data.quote}&rdquo;
+            </blockquote>
+            <figcaption class="mt-5 flex items-center gap-3 text-sm text-muted-foreground">
+              {t.data.photo ? (
+                <img
+                  src={t.data.photo}
+                  alt={t.data.author}
+                  class="h-10 w-10 object-cover border border-border"
+                  style="border-radius: var(--radius-md)"
+                />
+              ) : (
+                <span
+                  class="inline-flex h-10 w-10 items-center justify-center bg-muted border border-border text-xs font-semibold text-foreground"
+                  style="border-radius: var(--radius-md)"
+                >
+                  {initials(t.data.author)}
+                </span>
+              )}
+              <span>
+                <span class="block font-semibold text-foreground">{t.data.author}</span>
+                {(t.data.role || t.data.company) && (
+                  <span class="block text-xs">
+                    {t.data.role}
+                    {t.data.role && t.data.company && ", "}
+                    {t.data.company}
+                  </span>
+                )}
+              </span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

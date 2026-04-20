@@ -1,0 +1,44 @@
+---
+/*
+  Block dispatcher. Takes one entry from a page's `blocks` array (stored by
+  Keystatic as `{ discriminant: 'hero', value: {...} }`) and renders the
+  matching block component with the `value` object spread as props.
+
+  Adding a new block:
+  1. Add the schema to keystatic.config.ts (inside pageBlocks discriminant)
+  2. Create src/components/blocks/<YourBlock>.astro
+  3. Add a case to the switch below
+*/
+import Hero from "./blocks/Hero.astro";
+import FeatureGrid from "./blocks/FeatureGrid.astro";
+import TestimonialWall from "./blocks/TestimonialWall.astro";
+import CtaBand from "./blocks/CtaBand.astro";
+import Faq from "./blocks/Faq.astro";
+import Stats from "./blocks/Stats.astro";
+import PricingTiers from "./blocks/PricingTiers.astro";
+import LogoCloud from "./blocks/LogoCloud.astro";
+import ContentBlock from "./blocks/ContentBlock.astro";
+import CtaSplit from "./blocks/CtaSplit.astro";
+
+interface Props {
+  block: {
+    discriminant: string;
+    value: Record<string, any>;
+  };
+}
+
+const { block } = Astro.props;
+const kind = block?.discriminant;
+const value = block?.value ?? {};
+---
+
+{kind === "hero" && <Hero {...value} />}
+{kind === "feature-grid" && <FeatureGrid {...value} />}
+{kind === "testimonial-wall" && <TestimonialWall {...value} />}
+{kind === "cta-band" && <CtaBand {...value} />}
+{kind === "faq" && <Faq {...value} />}
+{kind === "stats" && <Stats {...value} />}
+{kind === "pricing-tiers" && <PricingTiers {...value} />}
+{kind === "logo-cloud" && <LogoCloud {...value} />}
+{kind === "content-block" && <ContentBlock {...value} />}
+{kind === "cta-split" && <CtaSplit {...value} />}

@@ -1,0 +1,70 @@
+---
+/*
+  Hero block. Picks one of the four hero variants based on `variant`, and
+  passes through all the editable copy. `image` is only used by the
+  "split-with-image" variant.
+*/
+import HeroLeftAligned from "../heroes/HeroLeftAligned.astro";
+import HeroCentered from "../heroes/HeroCentered.astro";
+import HeroSplitWithImage from "../heroes/HeroSplitWithImage.astro";
+import HeroDarkBold from "../heroes/HeroDarkBold.astro";
+
+interface Props {
+  variant?: "left-aligned" | "centered" | "split-with-image" | "dark-bold";
+  overline?: string;
+  headline?: string;
+  subhead?: string;
+  ctaText?: string;
+  ctaUrl?: string;
+  image?: string | null;
+}
+
+const {
+  variant = "left-aligned",
+  overline,
+  headline = "",
+  subhead,
+  ctaText,
+  ctaUrl,
+  image,
+} = Astro.props;
+---
+
+{variant === "centered" && (
+  <HeroCentered
+    overline={overline}
+    headline={headline}
+    subhead={subhead}
+    ctaText={ctaText}
+    ctaUrl={ctaUrl}
+  />
+)}
+{variant === "split-with-image" && (
+  <HeroSplitWithImage
+    overline={overline}
+    headline={headline}
+    subhead={subhead}
+    ctaText={ctaText}
+    ctaUrl={ctaUrl}
+    heroImage={image}
+    imageAlt={headline}
+  />
+)}
+{variant === "dark-bold" && (
+  <HeroDarkBold
+    overline={overline}
+    headline={headline}
+    subhead={subhead}
+    ctaText={ctaText}
+    ctaUrl={ctaUrl}
+  />
+)}
+{(variant !== "centered" && variant !== "split-with-image" && variant !== "dark-bold") && (
+  <HeroLeftAligned
+    overline={overline}
+    headline={headline}
+    subhead={subhead}
+    ctaText={ctaText}
+    ctaUrl={ctaUrl}
+  />
+)}

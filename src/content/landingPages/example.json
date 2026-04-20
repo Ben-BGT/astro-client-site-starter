@@ -1,0 +1,109 @@
+{
+  "title": "Example landing page",
+  "description": "A seeded example showing the block library in action. Edit or duplicate in /keystatic under Landing pages.",
+  "showChrome": true,
+  "blocks": [
+    {
+      "discriminant": "hero",
+      "value": {
+        "variant": "dark-bold",
+        "overline": "Offer",
+        "headline": "Launch a site your team can actually run.",
+        "subhead": "Two weeks, fixed price, fully yours.",
+        "ctaText": "Book a call",
+        "ctaUrl": "/contact",
+        "image": null
+      }
+    },
+    {
+      "discriminant": "pricing-tiers",
+      "value": {
+        "title": "Pick a tier",
+        "intro": "Three options. Scope fixed up front. No surprise invoices.",
+        "tiers": [
+          {
+            "name": "Starter",
+            "price": "$2,500",
+            "period": "one-off",
+            "description": "A single-page site that looks sharp and loads fast.",
+            "featured": false,
+            "ctaText": "Start with Starter",
+            "ctaUrl": "/contact",
+            "features": [
+              "One-page site, up to 8 sections",
+              "CMS setup for copy edits",
+              "Basic contact form",
+              "Launch in 2 weeks"
+            ]
+          },
+          {
+            "name": "Professional",
+            "price": "$6,500",
+            "period": "one-off",
+            "description": "The full template library. Services, team, blog, case studies.",
+            "featured": true,
+            "ctaText": "Get Professional",
+            "ctaUrl": "/contact",
+            "features": [
+              "Up to 10 pages",
+              "Full CMS across all content types",
+              "Blog with RSS",
+              "30-day post-launch support"
+            ]
+          },
+          {
+            "name": "Enterprise",
+            "price": "Custom",
+            "period": "",
+            "description": "Bigger sites, integrations, ongoing partnership.",
+            "featured": false,
+            "ctaText": "Book a call",
+            "ctaUrl": "/contact",
+            "features": [
+              "Unlimited pages",
+              "Custom integrations",
+              "Ongoing retainer",
+              "Quarterly reviews"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "discriminant": "faq",
+      "value": {
+        "title": "Things people ask",
+        "intro": "",
+        "items": [
+          {
+            "question": "Do I own the code and content?",
+            "answer": "Yes. Everything sits in a git repo in your GitHub account, the domain is in your name, and hosting is set up on your account. If we ever part ways, the whole site comes with you."
+          },
+          {
+            "question": "How do edits work?",
+            "answer": "You log in at /keystatic with your GitHub account and edit pages in a friendly admin UI. Each save commits to git and the site redeploys automatically."
+          },
+          {
+            "question": "What if I need a custom feature later?",
+            "answer": "The stack is extensible. If you need a booking widget, a member portal, or a CRM sync, I scope it as a separate project with its own fixed price."
+          },
+          {
+            "question": "What's the catch?",
+            "answer": "None. The only ongoing cost is hosting (typically $0 to $20 per month depending on traffic) and a domain name."
+          }
+        ]
+      }
+    },
+    {
+      "discriminant": "cta-split",
+      "value": {
+        "image": null,
+        "headline": "Ready when you are.",
+        "subhead": "Book a 20 minute call. No pitch, no pressure. If we're not a fit I'll tell you on the call.",
+        "ctaText": "Book the call",
+        "ctaUrl": "/contact",
+        "imageSide": "left"
+      }
+    }
+  ]
+}
