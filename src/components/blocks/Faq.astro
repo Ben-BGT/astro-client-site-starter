@@ -12,19 +12,20 @@ interface Item {
 }
 
 interface Props {
+  overline?: string;
   title?: string;
   intro?: string;
   items?: Item[];
 }
 
-const { title = "Questions", intro, items = [] } = Astro.props;
+const { overline = "FAQ", title = "Questions", intro, items = [] } = Astro.props;
 ---
 
 <section class="py-16 sm:py-20 border-t border-border">
   <div class="mx-auto max-w-3xl px-6 lg:px-8">
     {(title || intro) && (
       <SectionHeading
-        overline="FAQ"
+        overline={overline}
         title={title}
         description={intro || ""}
         align="center"

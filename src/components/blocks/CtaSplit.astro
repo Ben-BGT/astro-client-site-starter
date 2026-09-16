@@ -8,8 +8,11 @@
   build pipeline generates responsive srcset and WebP/AVIF variants. Cuts page
   weight significantly for client sites with photo-heavy CTAs.
 */
+import { getPublicImageSize } from "../../lib/imageSize";
+
 interface Props {
   image?: string | null;
+  imageAlt?: string;
   headline?: string;
   subhead?: string;
   ctaText?: string;
@@ -19,12 +22,17 @@ interface Props {
 
 const {
   image,
+  imageAlt,
   headline,
   subhead,
   ctaText,
   ctaUrl,
   imageSide = "left",
 } = Astro.props;
+
+// Intrinsic size read at build time so the browser reserves the right box and
+// the text below doesn't jump when the photo decodes.
+const dimensions = getPublicImageSize(image);
 
 const imageOrder = imageSide === "right" ? "lg:order-2" : "lg:order-1";
 const textOrder = imageSide === "right" ? "lg:order-1" : "lg:order-2";
@@ -37,7 +45,11 @@ const textOrder = imageSide === "right" ? "lg:order-1" : "lg:order-2";
         {image ? (
           <img
             src={image}
-            alt={headline || ""}
+            alt={imageAlt || headline || ""}
+            width={dimensions?.width}
+            height={dimensions?.height}
+            loading="lazy"
+            decoding="async"
             class="w-full h-auto object-cover border border-border"
             style="border-radius: var(--radius-md)"
           />

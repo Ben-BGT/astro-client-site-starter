@@ -18,19 +18,20 @@ interface Tier {
 }
 
 interface Props {
+  overline?: string;
   title?: string;
   intro?: string;
   tiers?: Tier[];
 }
 
-const { title = "Pricing", intro, tiers = [] } = Astro.props;
+const { overline = "Pricing", title = "Pricing", intro, tiers = [] } = Astro.props;
 ---
 
 <section class="py-16 sm:py-20 border-t border-border">
   <div class="mx-auto max-w-6xl px-6 lg:px-8">
     {(title || intro) && (
       <SectionHeading
-        overline="Pricing"
+        overline={overline}
         title={title}
         description={intro || ""}
         align="center"

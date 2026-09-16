@@ -27,6 +27,7 @@ interface Props {
   ctaText?: string;
   ctaUrl?: string;
   image?: string | null;
+  imageAlt?: string;
 }
 
 const {
@@ -37,6 +38,7 @@ const {
   ctaText,
   ctaUrl,
   image,
+  imageAlt,
 } = Astro.props;
 ---
 
@@ -57,7 +59,7 @@ const {
     ctaText={ctaText}
     ctaUrl={ctaUrl}
     heroImage={image}
-    imageAlt={headline}
+    imageAlt={imageAlt || headline}
   />
 )}
 {variant === "dark-bold" && (

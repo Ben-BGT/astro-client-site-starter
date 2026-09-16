@@ -8,14 +8,20 @@ import { getCollection } from "astro:content";
 import SectionHeading from "../SectionHeading.astro";
 
 interface Props {
+  overline?: string;
   title?: string;
   intro?: string;
   source?: "featured" | "all";
   limit?: number | null;
 }
 
-const { title = "What clients say", intro, source = "featured", limit = 6 } =
-  Astro.props;
+const {
+  overline = "Testimonials",
+  title = "What clients say",
+  intro,
+  source = "featured",
+  limit = 6,
+} = Astro.props;
 
 const all = await getCollection("testimonials");
 let list =
@@ -40,7 +46,7 @@ function initials(name: string) {
     <div class="mx-auto max-w-6xl px-6 lg:px-8">
       {(title || intro) && (
         <SectionHeading
-          overline="Testimonials"
+          overline={overline}
           title={title}
           description={intro || ""}
           align="center"

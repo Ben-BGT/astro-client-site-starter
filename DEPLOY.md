@@ -21,12 +21,15 @@ Same for the GitHub repo and the domain registrar. Client owns the stack. You're
 
 That's the whole deploy. Every push to `main` re-deploys.
 
+5. **Close the `.vercel.app` duplicate** before the site gets crawled. See "Close the platform's free subdomain" below. Not optional for a site meant to be found in search.
+
 ## Netlify
 
 1. **Fork or push** the repo to the client's GitHub account.
 2. **Create a Netlify account** in the client's name, click `Add new site > Import an existing project`.
 3. **Connect the repo.** Netlify picks up the Astro build settings from `astro.config.mjs`.
 4. **Add the custom domain** under `Site settings > Domain management`. Point the client's DNS at Netlify.
+5. **Close the `.netlify.app` duplicate** before the site gets crawled. See "Close the platform's free subdomain" below. Not optional for a site meant to be found in search.
 
 ## Cloudflare Pages
 
@@ -34,6 +37,71 @@ That's the whole deploy. Every push to `main` re-deploys.
 2. **Create a Cloudflare account** in the client's name, go to `Workers & Pages > Create > Pages > Connect to Git`.
 3. **Select the repo**, pick the `Astro` framework preset, accept the defaults.
 4. **Add the custom domain** under `Custom domains`. If the domain is already on Cloudflare DNS, it's one click.
+
+## Close the platform's free subdomain before the site is indexed
+
+**Do this for every site that is meant to be found in search.** Skip it only for internal builds and anything deliberately hidden.
+
+Every one of these hosts keeps serving the production deploy on a free subdomain of its own, alongside the custom domain you attached:
+
+| Host | Free subdomain |
+|---|---|
+| Vercel | `<project>.vercel.app` |
+| Netlify | `<sitename>.netlify.app` |
+| Cloudflare Pages | `<project>.pages.dev` |
+
+That subdomain is a complete, crawlable duplicate of the site: HTTP 200, no `X-Robots-Tag`, a `robots.txt` saying `Allow: /`, and pages declaring `index, follow`. The canonical tag points at the real domain, which is why this rarely causes visible harm, but a canonical is a hint rather than a directive.
+
+This is the default behaviour on all three, not a misconfiguration, so it stays open until someone closes it. As of September 2026 this template's own demo at `astro-client-site-starter.vercel.app` is open exactly this way.
+
+Worth naming the trap, because it is the reason this gets missed: preview deploys are handled for you. Vercel and Netlify both apply `noindex` automatically to **preview and branch deployments** (`deploy-preview-12--site.netlify.app` and friends). Neither applies it to the **production alias**, because that alias serves production. "The previews are fine" is true and is not the same statement.
+
+**Check it:**
+
+```bash
+curl -sI https://<project>.vercel.app/ | grep -i 'x-robots\|HTTP/'
+curl -s  https://<project>.vercel.app/robots.txt
+```
+
+A `200` with no `X-Robots-Tag` and an `Allow: /` robots.txt means it is open.
+
+**Fix it — Vercel.** Add to `vercel.json`, which redirects the whole host to the real domain:
+
+```json
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "<project>.vercel.app" }],
+      "destination": "https://<realdomain>/:path*",
+      "permanent": true
+    }
+  ]
+}
+```
+
+**Fix it — Netlify.** Add to `netlify.toml`, kept *first*, above any path redirects, so it wins before they match:
+
+```toml
+[[redirects]]
+  from = "https://<sitename>.netlify.app/*"
+  to = "https://<realdomain>/:splat"
+  status = 301
+  force = true
+```
+
+**Fix it — Cloudflare Pages.** Add a Bulk Redirect, or a `_redirects` line, from the `pages.dev` host to the real domain.
+
+A redirect rather than a `noindex` header, in every case: header rules generally cannot match on hostname, so there is no way to send `noindex` to one host and not the other from config, and a redirect also consolidates any links that already point at the free subdomain instead of stranding them. Preview hostnames do not match these rules, so preview workflows are unaffected.
+
+**Verify after deploying:**
+
+```bash
+curl -sI https://<project>.vercel.app/ | grep -i 'HTTP/\|location'
+# expect: 301 -> https://<realdomain>/
+```
+
+If the site has been live and open for a while, check Search Console for impressions on the free subdomain to see whether anything was indexed before the fix.
 
 ## Going to production with GitHub OAuth for Keystatic
 

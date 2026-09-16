@@ -5,6 +5,8 @@
   Good for product businesses, services where showing the
   deliverable matters, and personal brands.
 */
+import { getPublicImageSize } from "../../lib/imageSize";
+
 interface Props {
   overline?: string;
   headline: string;
@@ -16,6 +18,10 @@ interface Props {
 }
 
 const { overline, headline, subhead, ctaText, ctaUrl, heroImage, imageAlt = "" } = Astro.props;
+
+// Intrinsic size read at build time: this hero photo is usually the largest
+// element on the page, so an unreserved box means a visible shift on load.
+const heroDimensions = getPublicImageSize(heroImage);
 ---
 
 <section class="relative overflow-hidden border-b border-border">
@@ -56,6 +62,11 @@ const { overline, headline, subhead, ctaText, ctaUrl, heroImage, imageAlt = "" }
           <img
             src={heroImage}
             alt={imageAlt}
+            width={heroDimensions?.width}
+            height={heroDimensions?.height}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
             class="w-full h-auto object-cover border border-border"
             style="border-radius: var(--radius-md)"
           />

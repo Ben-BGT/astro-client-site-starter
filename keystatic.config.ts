@@ -37,6 +37,12 @@ const heroBlock = fields.object({
     directory: 'public/images/blocks',
     publicPath: '/images/blocks/',
   }),
+  imageAlt: fields.text({
+    label: 'Image alt text',
+    description:
+      'Describes the image for screen readers and search engines. Leave blank to fall back to the headline.',
+    defaultValue: '',
+  }),
 });
 
 const featureGridBlock = fields.object({
@@ -67,6 +73,11 @@ const featureGridBlock = fields.object({
 });
 
 const testimonialWallBlock = fields.object({
+  overline: fields.text({
+    label: 'Overline',
+    description: 'Small label above the heading. Leave blank to hide it.',
+    defaultValue: 'Testimonials',
+  }),
   title: fields.text({ label: 'Title', defaultValue: 'What clients say' }),
   intro: fields.text({ label: 'Intro', multiline: true, defaultValue: '' }),
   source: fields.select({
@@ -105,6 +116,11 @@ const ctaBandBlock = fields.object({
 });
 
 const faqBlock = fields.object({
+  overline: fields.text({
+    label: 'Overline',
+    description: 'Small label above the heading. Leave blank to hide it.',
+    defaultValue: 'FAQ',
+  }),
   title: fields.text({ label: 'Title', defaultValue: 'Questions' }),
   intro: fields.text({ label: 'Intro', multiline: true, defaultValue: '' }),
   items: fields.array(
@@ -138,6 +154,11 @@ const statsBlock = fields.object({
 });
 
 const pricingTiersBlock = fields.object({
+  overline: fields.text({
+    label: 'Overline',
+    description: 'Small label above the heading. Leave blank to hide it.',
+    defaultValue: 'Pricing',
+  }),
   title: fields.text({ label: 'Title', defaultValue: 'Pricing' }),
   intro: fields.text({ label: 'Intro', multiline: true, defaultValue: '' }),
   tiers: fields.array(
@@ -214,6 +235,12 @@ const ctaSplitBlock = fields.object({
     label: 'Image',
     directory: 'public/images/blocks',
     publicPath: '/images/blocks/',
+  }),
+  imageAlt: fields.text({
+    label: 'Image alt text',
+    description:
+      'Describes the image for screen readers and search engines. Leave blank to fall back to the headline.',
+    defaultValue: '',
   }),
   headline: fields.text({ label: 'Headline', defaultValue: '' }),
   subhead: fields.text({ label: 'Subhead', multiline: true, defaultValue: '' }),
